@@ -1,0 +1,12 @@
+# Site settings
+title: Chaosmail Blog
+email: office(at)chaosmail.at
+description: "chaosmail blog :: yet another web enthusiast"
+baseurl: ""
+url: "http://chaosmail.github.io/"
+twitter_username: ChrisiKrnr
+github_username:  chaosmail
+
+# Build settings
+markdown: kramdown
+permalink: pretty
