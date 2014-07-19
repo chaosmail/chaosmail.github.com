@@ -4,9 +4,10 @@ title:  "Blogging with Jekyll from Github"
 date:   2014-07-15 17:30:00
 categories: github
 tags: github jekyll markdown
+comments: true
 ---
 
-Jekyll is a simple, blogaware static page-generator written in Ruby. In this blogpost I will discuss how to use Jekyll to blog directly from a Github repository. The advantages are obvious: we don't need to host the blog on a paid webhoster, we don't need to administrate a database, we can use a beautiful markup parser like [markdown][markdown-specs] to write and format blogposts and pushes are automatically published to the personal Github user page [http://chaosmail.github.io](http://chaosmail.github.io).
+[Jekyll][jekyll-docs] is a simple, blogaware static page-generator written in Ruby. In this blogpost I will discuss how to use Jekyll to blog directly from a Github repository. The advantages are obvious: we don't need to host the blog on a paid webhoster, we don't need to administrate a database, we can use a beautiful markup parser like [markdown][markdown-specs] to write and format blogposts and pushes are automatically published to the personal Github user page [http://chaosmail.github.io](http://chaosmail.github.io).
 
 ## Setup
 

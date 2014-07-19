@@ -1,0 +1,13 @@
+/* Custom Home styles */
+/* ----------------------------------------------------------*/
+
+.posts .post-tags {
+  display: block;
+  font-size: 15px;
+  color: #818181;
+}
+
+.label-tags {
+	background-color: #f0ad4e;
+	opacity: 0.7;
+}
