@@ -7,7 +7,7 @@ tags: github
 comments: true
 ---
 
-[Github][github-web] is web-based hosting service for Git repositories, that helps to organize code in version control. Additionally it offers a great discount for educational purposes (for students, teachers, researchers, etc.): the Micro plan (5 private repositories) free for 2 years.
+[Github][github-web] is a web-based hosting service for Git repositories that helps to organize code in version control. Additionally it offers a great discount for educational purposes (for students, teachers, researchers, etc.): the Micro plan (5 private repositories) free for 2 years.
 
 ## Get the Discount
 
