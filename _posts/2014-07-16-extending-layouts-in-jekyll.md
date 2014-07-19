@@ -2,7 +2,7 @@
 layout: post
 title:  "Extending Layouts in Jekyll"
 date:   2014-07-16 21:30:00
-categories: github
+categories: programming
 tags: jekyll liquid disqus
 comments: true
 ---

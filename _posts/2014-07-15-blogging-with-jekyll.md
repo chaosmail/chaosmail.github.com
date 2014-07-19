@@ -2,7 +2,7 @@
 layout: post
 title:  "Blogging with Jekyll from Github"
 date:   2014-07-15 17:30:00
-categories: github
+categories: programming
 tags: github jekyll markdown
 comments: true
 ---
