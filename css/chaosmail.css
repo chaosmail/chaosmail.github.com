@@ -1,13 +1,29 @@
 /* Custom Home styles */
 /* ----------------------------------------------------------*/
 
+.home h1 {
+	font-size: 42px;
+	font-weight: 300;
+}
+
+/* Tags */
 .posts .post-tags {
-  display: block;
-  font-size: 15px;
-  color: #818181;
+  	display: block;
+  	font-size: 15px;
 }
 
 .label-tags {
 	background-color: #f0ad4e;
+	opacity: 0.7;
+}
+
+/* Categories */
+.posts .post-categories {
+  	font-size: 15px;
+}
+
+.label-categories {
+	margin-right: 10px;
+	color: #428bca;
 	opacity: 0.7;
 }

@@ -6,6 +6,7 @@ baseurl: ""
 url: "http://chaosmail.github.io/"
 twitter_username: ChrisiKrnr
 github_username:  chaosmail
+paginate: 5
 
 # Build settings
 markdown: kramdown
