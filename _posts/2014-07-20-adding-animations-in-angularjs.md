@@ -39,7 +39,7 @@ We have to register the animation package in the application, so we add *ngAnima
 var myApp = angular.module('MyApp', ['ngAnimate']);
 {% endhighlight %}
 
-After these steps, we have animation enbaled in the application and we can use CSS classes to define the elements that should be animated. The animations itself are declared with CSS transitions.
+After these steps, we have animation enabled in the application and we can use CSS classes to define the elements that should be animated. The animations itself are declared with CSS transitions.
 
 ## Animating Elements in ngRepeat
 
