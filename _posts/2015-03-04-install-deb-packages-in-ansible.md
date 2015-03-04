@@ -7,7 +7,7 @@ tags: ansible ubuntu deb
 comments: true
 ---
 
-[Ansible][ansible-web] is a very simple, clean and elegant way to provision your production or development machines. It can be also used to setup and configure your development desktop from a plain Ubuntu 14.04 LTS installation. For this task, we will soon run into the problem to check, download and install applications - not with the package manager apt-get - but as .deb packages (e.g. dropbox, vagrant, etc.). In this blogpost, I will discribe who I solved these problems using Ansible.
+[Ansible][ansible-web] is a very simple, clean and elegant tool to provision your production or development machines. It can be also used to setup and configure your development desktop, for example from a plain Ubuntu 14.04 LTS installation. For this task, we will soon run into the need to check, download and install applications as .deb packages because there is no ppa repository available (e.g. for dropbox, vagrant, etc.). In this blogpost, I will discribe how I solved this problem using Ansible.
 
 ## Checking if .deb Package is already installed
 
@@ -52,7 +52,7 @@ Finally, we install the package - again just if the package was not previously i
 
 ## Further Readings
 
-This technique is used in my project *dev-env*, a Ansible based installer for a local development environment. The code of this project and the complete Ansible configuration and roles can be found on [GitHub](http://github.com/chaosmail/dev-env).
+This technique is used in my project *dev-env*, a Ansible based installer for a local development environment. The source code of this project and the complete Ansible configuration and roles can be found on [GitHub](http://github.com/chaosmail/dev-env).
 
 ## References
 
