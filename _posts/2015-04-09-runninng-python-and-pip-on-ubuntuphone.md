@@ -42,7 +42,7 @@ You should now see an output saying *Successfully installed pip setuptools*. Fin
 python3 -m pip install requests
 ```
 
-## Limitation
+## Limitations
 
 Due to the lack of compiling tools on the phone, we are not able to install any packages with *pip* that need to be compiled, such as *numpy*. These packages need to be cross-compiled and copied on the phone manually.
 
