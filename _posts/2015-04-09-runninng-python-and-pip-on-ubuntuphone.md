@@ -29,6 +29,7 @@ Now configure *pip* to always use the *--user* flag, in order to install everyth
 mkdir -p .config/pip
 echo -e "[install]\nuser = true" > .config/pip/pip.conf
 ```
+
 Next, you can run the pip installer to install and update itself.
 
 ```
