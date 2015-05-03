@@ -37,7 +37,7 @@ Now we will mount a [writable root directory][ubuntu-devices] on the ubuntuphone
 sudo apt-get install phablet-tools
 ```
 
-Then, connect the phone with USB and unlock the screen and enable the developer mode in the settings. Now run the following command from the host machine.
+Then, connect the phone with USB, unlock the screen, and enable the developer mode in the settings. Now, run the following command from the host machine to make the filesystem writable.
 
 ```
 phablet-config writable-image
