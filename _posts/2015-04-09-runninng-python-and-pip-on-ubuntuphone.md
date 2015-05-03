@@ -52,7 +52,7 @@ When, we want to call *pip* directly - instead of using the *python -m pip* comm
 echo -e "PATH=$PATH:$HOME/.local/bin\nexport PATH" >> .bashrc
 ```
 
-Now, if we restart the terminal we can use the *pip* command directly from the termnial. However, when we execute the *pip* command in the terminal, we will receive a *bad interpreter, permission denied* error message. As a workaround, we need to use the odd *python3 -m pip* command.
+Now, if we restart the terminal we can use the *pip* command directly from the termnial. However, when we execute the *pip* command in the terminal, we will receive a *bad interpreter, permission denied* error message. This problem occurs due to the mount options of the */home* directory. As a workaround, we need to use the odd *python3 -m pip* command.
 
 ## Useful Shortcuts
 
@@ -63,6 +63,14 @@ ln -s /usr/bin/python3 .local/bin/python
 ```
 
 After restarting the Terminal app, we can use the *python* command.
+
+### 
+
+```
+$ mount | grep home
+/dev/mmcblk0p7 on home type ext4 (rw,relatime,discard,nodelalloc,data=journal)
+```
+
 
 ## References
 
