@@ -55,8 +55,15 @@ sudo apt-get install python python-dev gcc g++
 
 Now we install the *pip* package manager - we will use the recommended [pip installer][pip-installer].
 
+Download the installer using *wget*.
+
 ```
 wget https://bootstrap.pypa.io/get-pip.py
+```
+
+Then, execute the installer.
+
+```
 python get-pip.py
 ```
 
