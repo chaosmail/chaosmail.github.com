@@ -4,6 +4,10 @@ title: About
 permalink: /about/
 ---
 
-I am a passionate Software Engineer and Web Enthusiast, who loves Linux, Latex, Open Source, Music and his girlfriend.
+* passionate Software Engineer, Entrepreneur and Web Enthusiast, who loves Linux, Python, Latex, Open Source, the Web, Music and his girlfriend
 
-In my blog I am writing about the experiences of the tools and software I am using in an understandable way. 
+* CTO of the Swiss startup company [GESIM][http://gesim.ch] where we developed simulations to increase utilization (thus decrease costs and CO2-emissions) of big buildings such as universities, schools and office building
+
+* author of the book "Interactive data visualizations with AngularJS and D3" published by PacktPub
+
+* collaborator of the famous `n3-line-chart` directive, a responsive and interactive chart library built with Typescript and AngularJS on top of D3.js
