@@ -7,19 +7,19 @@ tags: soundio webaudio midi
 comments: true
 ---
 
-The [sound.io][soundio] library contains the graph object model - which uses the other libraries into it. So it helps us to construct the Audio graph out of a collection of [audio-objects][audio-object] and connections that links the audio-objects together. Article in progress..
+The [sound.io][soundio] core library implements a graph object model for audio - we are calling this the *audio graph*. The audio graph can be constructed out of a collection of *[audio-objects][audio-object]* and *connections* that links the audio-objects together.
 
 ## audio-object
 
-[Audio object][audio-object] abstracts [Web Audio API][web-audio] and are the building blocks of an audio graph.
+The [audio object][audio-object] is a wrapper on the [Web Audio API][web-audio]. These objects are the building blocks of an audio graph.
 
 ## soundio-object-template
 
-The [soundio-object-template][soundio-object-template] contains a plugin template to build your own plugins. The *audio* variable in the constructor contains a reference to the [Audio Context][web-audio-audio-context].
+The [soundio-object-template repository][soundio-object-template] contains a plugin template to build custom plugins. The *audio* variable in the constructor contains a reference to the [Audio Context][web-audio-audio-context].
 
 ## MIDI
 
-[MIDI][midi] abstracts the Web MIDI API. It contains a *normalize* function that converts MIDI format to [Music JSON][music-json] which is used internally.
+[MIDI][midi] abstracts the [Web MIDI API][web-midi]. It contains a *normalize* function that converts MIDI format to [Music JSON][music-json] which is used internally.
 
 ## Clock
 
@@ -63,6 +63,7 @@ A [sample map][sample-map] maps notes across the keyboard and the velocity range
 * [clock][clock]
 * [MIDI][midi]
 * [Scribe][scribe]
+* [Web MIDI API][web-midi]
 * [Web Audio API][web-audio]
 * [Web Audio API - Audi Context][web-audio-audio-context]
 
@@ -75,5 +76,6 @@ A [sample map][sample-map] maps notes across the keyboard and the velocity range
 [midi]: https://github.com/soundio/midi
 [music-json]: https://github.com/soundio/music-json
 [scribe]: https://github.com/soundio/scribe
+[web-midi]: http://www.w3.org/TR/webmidi/
 [web-audio]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
 [web-audio-audio-context]: https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
