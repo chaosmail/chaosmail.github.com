@@ -34,11 +34,9 @@ Maps the clock time to the Sequence time.
 ```js
 var soundio = Soundio();
 var sampler = soundio.objects.create('sample');
-
 // soundio.objects = [
 //  {id; 0, type: 'sample'}
 //]
-
 sampler.trigger(0, 'noteon', 64, 127);
 ```
 
