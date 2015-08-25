@@ -57,7 +57,7 @@ A [sample map][sample-map] maps notes across the keyboard and the velocity range
 
 * [sound.io][soundio]
 * [soundio sample][sample]
-* [soundio sample map][sample map]
+* [soundio sample map][sample-map]
 * [sound.io object-template][soundio-object-template]
 * [audio object][audio-object]
 * [clock][clock]
