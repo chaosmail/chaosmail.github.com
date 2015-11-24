@@ -2,7 +2,7 @@
 layout: post
 title:  "Data-driven Visualizations"
 date:   2015-11-24 19:00:00
-categories: graphics
+categories: web graphics
 tags: talk d3js
 comments: true
 ---
