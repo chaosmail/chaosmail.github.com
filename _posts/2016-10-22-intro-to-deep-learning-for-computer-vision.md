@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Intro do Deep Learning for Computer Vision"
+title: "Intro to Deep Learning for Computer Vision"
 date: 2016-10-22 21:30:00
 categories: deeplearning
 tags: deeplearning vision
@@ -299,7 +299,7 @@ Using the correct DNN architecture for an application of DL in computer vision r
 
 * <span id="Noh15">H. Noh, S. Hong, and B. Han, "Learning Deconvolution Network for Semantic Segmentation", *CoRR*, 2015.</span>
 
-* <span id="Hariharan14">B. Hariharan, P. Arbel\'{a}ez, R. Girshick, and J. Malik, "Simultaneous Detection and Segmentation", in *European Conference on Computer Vision (ECCV)*, 2014.</span>
+* <span id="Hariharan14">B. Hariharan, P. Arbeláez, R. Girshick, and J. Malik, "Simultaneous Detection and Segmentation", in *European Conference on Computer Vision (ECCV)*, 2014.</span>
 
 * <span id="Dai15">J. Dai, K. He, and J. Sun, "Instance-aware Semantic Segmentation via Multi-task Network Cascades", *CoRR*, 2015.</span>
 
