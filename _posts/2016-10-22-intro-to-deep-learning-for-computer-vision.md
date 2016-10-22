@@ -81,7 +81,7 @@ In modern (post-sigmoid) DNNs, *Normalization* is necessary for stable gradients
 
 #### Fully Connected Layer
 
-The FC layer works exactly as described in the previous section - it connects every output from the previous layer with a neuron. Usually, the FC layer is used at the end to combine all spatially distributed activations of the previous layers. The FC layers have the highest number of parameters ($$in \cdot n_n$$, where $$in$$ is the number of outputs of the previous layer and $$n_n$$ is the number of neurons) in the model (almost 90%); most computing time is spent in the early Conv layers.
+The FC layer works exactly as described in the previous section - it connects every output from the previous layer with each neuron. Usually, the FC layer is used at the end to combine all spatially distributed activations of the previous layers. The FC layers have the highest number of parameters ($$n_i \cdot n_n$$, where $$n_i$$ is the number of outputs of the previous layer and $$n_n$$ is the number of neurons) in the model (almost 90%); most computing time is spent in the early Conv layers.
 
 
 ### Final Output Layer
