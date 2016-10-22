@@ -19,7 +19,7 @@ In a first practical application, LeCun demonstrated the handwritten recognition
 
 NNs advanced in many domains, such as unsupervised learning using AutoEncoders (AE) and Self-Organizing Maps (SOM) as well as reinforcement learning especially in the domain of control systems and robotics. New models such as Belief Networks, Time-Delay Neural Networks (TDNN) for audio processing and Recurrent Neural Networks (RNN) for speech recognition were implemented. However, in the late 1980s, multi-layer NNs were still difficult to train using BP due to the vanishing or exploding gradient problem. In the 1990s, new methods such as Support Vector Machines (SVMs) and Random Forests (RF) were determined as better suited for supervised learning than NNs due to their much simpler mathematical constructs.
 
-Almost 2 decades later, Hinton et al. showed that *Deep Neural Networks* (DNNs) can be trained if the weights are initialized better than randomly and rebranded the domain of multi-layer NNs to *Deep Learning* (DL). Leveraging the parallelization power of GPUs resulted in a speedup factor of 1 million increase in training time compared to 1980s and a factor of 70 increase compared to common CPUs in 2007. In 2011, DNNs outperformed a 10-year old state-of-the art record in speech recognition due to 1000 times more training data than used in the 1980s. Glorot \[Glorot10\], LeCun and Hinton further studied the necessity of weight initialization and proposed a much simpler activation function $$f(x) = max(0, x)$$ - the so called Rectified Linear Unit (*ReLU*) - for stable BP.
+Almost 2 decades later, Hinton et al. showed that *Deep Neural Networks* (DNNs) can be trained if the weights are initialized better than randomly and rebranded the domain of multi-layer NNs to *Deep Learning* (DL). Leveraging the parallelization power of GPUs resulted in a speedup factor of 1 million increase in training time compared to 1980s and a factor of 70 increase compared to common CPUs in 2007. In 2011, DNNs outperformed a 10-year old state-of-the art record in speech recognition due to 1000 times more training data than used in the 1980s. [Glorot](#Glorot10), LeCun and Hinton further studied the necessity of weight initialization and proposed a much simpler activation function $$f(x) = max(0, x)$$ - the so called Rectified Linear Unit (*ReLU*) - for stable BP.
 
 Since 2012, DNNs have been winning classification, detection, localization and segmentation tasks in the ImageNet competitions ([Schmidhuber](#Schmidhuber14)) and outperformed all methods using hand-engineered features with almost $$10%$$ higher accuracy ([Krizhevsky](#Krizhevsky12)). The winning model of 2015s ImageNet competition is [ResNet-152 from Microsoft](#He15), a DNN with residual mapping and 152 layers who achieved $$16.5%$$ greater accuracy on average than the 2nd and [surpassed human accuracy in classification](#He15b).
 
@@ -67,17 +67,22 @@ Architecture of [LeNet](#LeCun90)
 
 #### Convolutions
 
-Conv layers consist of spatial filters that are convolved along the spatial dimensions and summed up along the depth dimension of the input volume. In general one starts with a large filter size (e.g. 11x11) and a low depth (e.g. 32) and reduces the filter size (e.g. to 3x3) while increasing the depth (e.g. to 256) throughout the network. Due to weight sharing, they are much more efficient than fully-connected layers. 
+A Conv layer consists of spatial filters that are convolved along the spatial dimensions and summed up along the depth dimension of the input volume. In general one starts with a large filter size (e.g. 11x11) and a low depth (e.g. 32) and reduces the spatial filter dimensions (e.g. to 3x3) while increasing the depth (e.g. to 256) throughout the network. Due to weight sharing, they are much more efficient than fully-connected layers. A Conv layer has $$w \cdot h \cdot d \cdot n_f$$ number of parameters without bias ($$w$$ .. width of the filter, $$h$$ .. height of the filter, $$d$$ .. depth of the filter, $$n_f$$ number of filters) that need to be learned during training.
 
 #### Pooling
 
-Conv layers are often followed by a Pool layers in order to reduce the spatial dimension of the volume for the next filters - this is the equivalent of a subsampling operation. In the end, all activations of the image are joined using multiple (usually 2) *fully-connected* (FC) layers. The FC layers have the highest number of parameters in the model (almost 90%); most computing time is spent in the early Conv layers.
+Conv layers are often followed by a Pool layer in order to reduce the spatial dimension of the volume for the next filter - this is the equivalent of a subsampling operation. The pooling operation itself has no learnable parameters.
 
 Most of the time, $$max$$ pooling layers are used in DL models due to the easier gradient computation. During BP, the gradient only flows in the direction of the single max activation which can be computed very efficiently. A few other architectures use $$avg$$ pooling, mostly at the end of a network or before the fully connected layers and without a noticeable increase in performance.
 
 #### Normalization
 
 In modern (post-sigmoid) DNNs, *Normalization* is necessary for stable gradients throughout the network. Due to the unbounded behavior of the ReLU activations ($$y = max(0, x)$$), filter responses have to be normalized. Usually this is done per batch using [batch normalization](#Ioffe15) or locally using a Local Response Normalization layer.
+
+#### Fully Connected Layer
+
+The FC layer works exactly as described in the previous section - it connects every output from the previous layer with a neuron. Usually, the FC layer is used at the end to combine all spatially distributed activations of the previous layers. The FC layers have the highest number of parameters ($$in \cdot n_n$$, where $$in$$ is the number of outputs of the previous layer and $$n_n$$ is the number of neurons) in the model (almost 90%); most computing time is spent in the early Conv layers.
+
 
 ### Final Output Layer
 
