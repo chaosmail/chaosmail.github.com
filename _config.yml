@@ -11,6 +11,10 @@ paginate: 10
 # Build settings
 markdown: kramdown
 permalink: pretty
+highlighter: rouge
+
+kramdown:
+ input: GFM
 
 gems:
   - jekyll-paginate

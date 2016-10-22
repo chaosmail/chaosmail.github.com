@@ -29,7 +29,7 @@ layout: default
             {% endfor %}
           </span>
         {% endif %}
-        <span>{{ post.excerpt }}</span>
+        <span>{{ post.excerpt | markdownify | hilightify }}</span>
         <a href="{{ post.url }}">Read more ..</a>
       </li>
     {% endfor %}

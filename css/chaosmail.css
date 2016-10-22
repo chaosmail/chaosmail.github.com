@@ -18,6 +18,25 @@ a:visited {
   color: #00695c;
 }
 
+img {
+  max-width: 740px;
+}
+
+.image-col-1 {
+  width: 100%;
+}
+
+.image-col-2 {
+  width: 50%;
+  float: left;
+}
+
+.image-col-3 {
+  width: 33%;
+  float: left;
+  max-height: 400px;
+}
+
 .site-title {
   font-weight: 300;
 }
