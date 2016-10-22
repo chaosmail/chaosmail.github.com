@@ -2,36 +2,48 @@
 /* ----------------------------------------------------------*/
 
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
 }
 
-/* Custom Home styles */
-/* ----------------------------------------------------------*/
-
-.home h1 {
-	font-size: 42px;
-	font-weight: 400;
+a {
+  color: #009688;
 }
 
-/* Tags */
-.posts .post-tags {
-  	display: block;
-  	font-size: 15px;
+a:hover {
+  color: #00897b;
 }
 
-.label-tags {
-	background-color: #f0ad4e;
-	opacity: 0.7;
+a:visited {
+  color: #00695c;
 }
 
-/* Categories */
-.posts .post-categories {
-  	font-size: 15px;
+.site-title {
+  font-weight: 300;
 }
 
-.label-categories {
-	margin-right: 10px;
-	color: #428bca;
-	opacity: 0.7;
+.post-link {
+  font-weight: 300;
+  margin-top: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+.post-link a {
+  color: #e91e63;
+}
+
+.post-link a:hover {
+  color: #d81b60;
+}
+
+.post-link a:visited {
+  color: #ad1457;
+}
+
+.post-date, .meta {
+  font-weight: 100;
+}
+
+.post-header h1 {
+  font-size: 36px;
 }
