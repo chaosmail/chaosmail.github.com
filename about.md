@@ -22,6 +22,8 @@ Hi, my name is Christoph Körner and I am a passionate software engineer, author
 
 * Collaborator of [n3-charts](https://github.com/n3-charts/line-chart), a responsive and interactive chart library built with Typescript and AngularJS on top of D3.js in collaboration with [Sébastien Fragnaud](https://github.com/lorem--ipsum)
 
+Check out my other open source projects in the [projects section](/projects/).
+
 ## Get in touch
 
 * [github.com/chaosmail](https://github.com/chaosmail)
