@@ -19,9 +19,9 @@ In a first practical application, LeCun demonstrated the handwritten recognition
 
 NNs advanced in many domains, such as unsupervised learning using AutoEncoders (AE) and Self-Organizing Maps (SOM) as well as reinforcement learning especially in the domain of control systems and robotics. New models such as Belief Networks, Time-Delay Neural Networks (TDNN) for audio processing and Recurrent Neural Networks (RNN) for speech recognition were implemented. However, in the late 1980s, multi-layer NNs were still difficult to train using BP due to the vanishing or exploding gradient problem. In the 1990s, new methods such as Support Vector Machines (SVMs) and Random Forests (RF) were determined as better suited for supervised learning than NNs due to their much simpler mathematical constructs.
 
-Almost 2 decades later, Hinton et al. showed that *Deep Neural Networks* (DNNs) can be trained if the weights are initialized better than randomly and rebranded the domain of multi-layer NNs to *Deep Learning* (DL). Leveraging the parallelization power of GPUs resulted in a speedup factor of 1 million increase in training time compared to 1980s and a factor of 70 increase compared to common CPUs in 2007. In 2011, DNNs outperformed a 10-year old state-of-the art record in speech recognition due to 1000 times more training data than used in the 1980s. [Glorot](#Glorot10), LeCun and Hinton further studied the necessity of weight initialization and proposed a much simpler activation function $$f(x) = max(0, x)$$ - the so called Rectified Linear Unit (*ReLU*) - for stable BP.
+Almost 2 decades later, Hinton et al. showed that *Deep Neural Networks* (DNNs) can be trained if the weights are initialized better than randomly and rebranded the domain of multi-layer NNs to *Deep Learning* (DL). Leveraging the parallelization power of GPUs resulted in a speedup factor of 1 million increase in training time compared to 1980s and a factor of 70 increase compared to common CPUs in 2007. In 2011, DNNs outperformed a 10-year old state-of-the art record in speech recognition due to 1000 times more training data than used in the 1980s. [Glorot](#Glorot10), LeCun and Hinton further studied the necessity of weight initialization and proposed a much simpler activation function $$f(x) = max(0, x)$$ - the so called Rectified Linear Unit (*ReLU*) - for more stable BP.
 
-Since 2012, DNNs have been winning classification, detection, localization and segmentation tasks in the ImageNet competitions ([Schmidhuber](#Schmidhuber14)) and outperformed all methods using hand-engineered features with almost $$10%$$ higher accuracy ([Krizhevsky](#Krizhevsky12)). The winning model of 2015s ImageNet competition is [ResNet-152 from Microsoft](#He15), a DNN with residual mapping and 152 layers who achieved $$16.5%$$ greater accuracy on average than the 2nd and [surpassed human accuracy in classification](#He15b).
+Since 2012, DNNs have been winning classification, detection, localization and segmentation tasks in the ImageNet competitions ([Schmidhuber](#Schmidhuber14)) and outperformed all methods using hand-engineered features with almost $$10$$% higher accuracy ([Krizhevsky](#Krizhevsky12)). The winning model of 2015s ImageNet competition is [ResNet-152 from Microsoft](#He15), a DNN with residual mapping and 152 layers who achieved $$16.5$$% greater accuracy on average than the 2nd and [surpassed human accuracy in classification](#He15b).
 
 ## From Neural Networks to Deep Learning
 
@@ -48,12 +48,12 @@ and reminds of a simple linear regression with a threshold gate. While the Perce
 
 #### Non-linearities (Activation Functions)
 
- Due to the singularity in the step function, other non-linear activation functions have been discovered and tested for NNs.
+ Due to the singularity in the step function, other non-linear activation functions have been proposed and successfully used in NNs.
 
-* *Rectified Linear Unit* (ReLU) is the most widely used non-linearity for DNNs and is computed via $$y = max(0, x)$$. While not being perfectly differentiable at position 0, the ReLU function greatly improves the learning process of the network due to the fact that the total gradient is simply passed to the input layer when the gate triggers.
+* *Rectified Linear Unit* (ReLU) is the most widely used non-linearity for DNNs and is computed via $$y = max(0, x)$$. While not being differentiable at position 0, the ReLU function greatly improves the learning process of the network due to the fact that the total gradient is simply passed to the input layer when the gate triggers.
 * *Leaky Rectified Linear Unit* (Leaky ReLU) exploits the fact that the original ReLU is set to 0 for negative inputs and hence does not propagate a gradient for negative inputs (this is a crucial fact for initialization).
 * *Sigmoid* non-linearities are commonly used together with regression networks in the final output layer as the outputs are bounded between $$-1$$ and $$1$$.
-* *Softmax* non-linearities are commonly used together with classification networks in the final output layer, as the sum of the total outputs results to $$1$$.
+* *Softmax* non-linearities are commonly used together with classification networks in the final output layer, as the sum of the total outputs results to $$1$$ - similar to a probability distribution.
 * *Hyperbolic tangent* (tanh) non-linearities are often used as a replacement for the sigmoid function leading to slightly better training results due to more stable numeric computation.
 
 ### Deep Neural Networks
@@ -81,7 +81,7 @@ In modern (post-sigmoid) DNNs, *Normalization* is necessary for stable gradients
 
 #### Fully Connected Layer
 
-The FC layer works exactly as described in the previous section - it connects every output from the previous layer with each neuron. Usually, the FC layer is used at the end to combine all spatially distributed activations of the previous layers. The FC layers have the highest number of parameters ($$n_i \cdot n_n$$, where $$n_i$$ is the number of outputs of the previous layer and $$n_n$$ is the number of neurons) in the model (almost 90%); most computing time is spent in the early Conv layers.
+The FC layer works exactly as described in the previous section - it connects every output from the previous layer with each neuron. Usually, the FC layer is used at the end to combine all spatially distributed activations of the previous Conv layers. The FC layers have the highest number of parameters ($$n_i \cdot n_n$$, where $$n_i$$ is the number of outputs of the previous layer and $$n_n$$ is the number of neurons) in the model (almost 90%); most computing time is spent in the early Conv layers.
 
 
 ### Final Output Layer
@@ -97,7 +97,7 @@ After defining a final output layer, one need to define as well a loss function 
 
 * *Classification*: Cross-entropy, computes the cross-entropy between the output of the network and the ground truth label and can be used for binary and categorical outputs (via hot-one encoding)
 * *Regression*: Squared error and mean squared error are common choices for regression problems
-* *Segmentation*: Intersection over union is a loss function well suited for comparing overlapping regions of an image and a prediction
+* *Segmentation*: Intersection over union is a loss function well suited for comparing overlapping regions of an image and a prediction - however, it is not well suited for DNNs because it returns 0 for non overlapping regions; MSE is a better choice
 
 The loss function can as well be extended with a regularization term to constraint the parameters of DNN. Both *L1* and *L2* regularization on the filter matrices $$W_i$$ are commonly used.
 
@@ -108,17 +108,17 @@ This section describes state-of-the-art DNN architectures, common parameterizati
 
 ### Convolutional Neural Networks (CNN)
 
-A CNN are neural networks that contain (multiple) convolutional layers (with a non-linear activation function) and additional pooling layers at the beginning of the network.
+A CNN is a neural network model that contains (multiple) convolutional layers (with a non-linear activation function) and additional pooling layers at the beginning of the network.
 
-A *convolution layer* extracts image features by convolving the input with multiple filters. It contains a set of 2-dimensional filters that are stacked into a 3-dimensional volume where each filter is applied to a volume constructed from all filter responses of the previous layer. If one considers the RGB channels of a 256x256 sized input image as a 256x256x3 volume, a 5x5x3 filter would be applied along a 5x5 2-dimensional region of the image and summed up across all 3 color channels. If the first layer after the rgb volume consist of 48 filters, it is represented as a volume of 5x5x3x48 weights and 48 biases. Using a convolution operation on the input volume and the filter volumes, the filter response (so called activation) results in an output volume with the dimensions 251x251x48. By padding the input layer with 0s, one can force to keep the spatial dimensions of the activations constant throughout the layers.
+A *convolution layer* extracts image features by convolving the input with multiple filters. It contains a set of 2-dimensional filters that are stacked into a 3-dimensional volume where each filter is applied to a volume constructed from all filter responses of the previous layer. If one considers the RGB channels of a 256x256 sized input image as a 256x256x3 volume, a 5x5x3 filter would be applied along a 5x5 2-dimensional region of the image and summed up across all 3 color channels. If the first layer after the RGB volume consist of 48 filters, it is represented as a volume of 5x5x3x48 weight parameters and 48 bias parameters. Using a convolution operation on the input volume and the filter volumes, the filter response (so called activation) results in an output volume with the dimensions 251x251x48 (using stride 1 and no padding). By padding the input layer with 0s, one can force to keep the spatial dimensions of the activations constant throughout the layers.
 
-Each convolution layer is followed by a nonlinear *activation function* (in DL mostly ReLU layers are used) with the same dimensions as the output volume of the convolution layer.
+Each convolution layer is followed by a nonlinear *activation function* (in DL mostly ReLU layers are used) which results in an activation with the same dimensions as the output volume of the previous convolution layer.
 
 A *pooling layer* subsamples the previous layer and outputs a volume of same depth but reduced spatial dimensions. Similar to a Gaussian pyramid, pooling helps filters to activate on features in the image at a different scale. Using a max-pooling 2x2 filter with stride 2 (the filter is shifted for 2 pixels on every iteration) one ends up with a 128x128x48 volume after pooling. In general, pooling layers are used at the beginning of the network and  at the end to better control the dimensions of the activations right before the fully-connected layers.
 
 ### AlexNet (2012)
 
-The following figure shows the architecture of [AlexNet](#Krizhevsky12), the winning model for classification in the ImageNet competition in 2012. As shown in the subsequent figure, it consist of 2 parallel set of layers with both convolution and pooling layers. The model was arranged like this due to the fact that 2 graphic cards were used in parallel for training (training AlexNet on the ImageNet dataset took 2 weeks on this setup). The filters start with a spatial dimensions 5x5 and 55 in depth (1,375 weights without bias) going to a 3x3x192 filter volume (1,728 weights without bias) towards the end of the network; hence, the filter size is decreasing but the filter depth is increasing per layer. The end of the network consists of 2 fully connected layers with 2048 nodes (4,194,304 weights without bias), and an output layer with 1000 nodes (2,048,000 weights without bias) according to the 1000 classes in the ImageNet dataset. Hence, most memory is used for the weights in the final fully connected layers; the whole model requires about 240MB in total memory. The fully connected layers at the end are needed to set the spatial filter responses in relation to each other for the resulting class prediction. 
+The following figure shows the architecture of [AlexNet](#Krizhevsky12), the winning model for classification in the ImageNet competition in 2012. As shown in the figure, it consist of 2 parallel set of layers with both convolution and max pooling layers. The model was arranged like this due to the fact that 2 graphic cards were used in parallel for training (training AlexNet on the ImageNet dataset took 2 weeks on this setup). The filters start with a spatial dimensions 5x5 and 55 in depth (1,375 weights without bias) going to a 3x3x192 filter volume (1,728 weights without bias) towards the end of the network; hence, the filter size is decreasing but the filter depth is increasing per layer. The end of the network consists of 2 fully connected layers with 2048 nodes (4,194,304 weights without bias), and an output layer with 1000 nodes (2,048,000 weights without bias) according to the 1000 classes in the ImageNet dataset. Hence, most memory is used for the weights in the final fully connected layers; the whole model requires about 240MB in total memory. The fully connected layers at the end are needed to set the spatial filter responses in relation to each other for the resulting class prediction. 
 
 ![Architecture of AlexNet]({{ site.baseurl }}/images/deep-learning/alexnet.png "Architecture of AlexNet"){: .image-col-1}
 
@@ -140,7 +140,7 @@ DL models Top-1 classification accuracy vs. accuracy per parameter (Source: [Can
 
 ### GoogLeNet (2014)
 
-The winning model in the ImageNet competition in 2014 was [GoogLeNet](#Szegedy14) which is even deeper than the previously discussed VGGNet. However, it uses only one tenth of the number of parameters of AlexNet by constructing it by out of 9 parallel modules, the inception module. As shown in the next figure, this module uses 1x1 convolutions (so called bottleneck convolutions) to sum up the depth dimensions of the previous layers while keeping the spatial dimensions of the volume. This greatly reduces the number of used parameters and allows to learn a set of feature across 1x1, 3x3 and 5x5 spatial dimensions mixed with a pooling of the original volume.
+The winning model in the ImageNet competition in 2014 was [GoogLeNet](#Szegedy14) which is even deeper than the previously discussed VGGNet. However, it uses only one tenth of the number of parameters of AlexNet due to the architecture of 9 parallel modules, the inception module. As shown in the next figure, this module uses 1x1 convolutions (so called bottleneck convolutions) to sum up the depth dimensions of the previous layers while keeping the spatial dimensions of the volume. This 1x1 convolutions allow to control/reduce the depth dimension which greatly reduces the number of used parameters due to removal of redundancy of correlated filters. It also enables to learn a set of feature across 1x1, 3x3 and 5x5 spatial dimensions in parallel mixed with a pooling of the original volume.
 
 
 ![GoogLeNet]({{ site.baseurl }}/images/deep-learning/inception.png "GoogLeNet"){: .image-col-1}
@@ -157,7 +157,7 @@ Deep Learning models 2012-2014 (Source: [CaffeJS][caffejs])
 
 ### Deep Residual Networks (2015)
 
-Microsoft's residual network ResNet, the winner from ImageNet 2015 and the deepest network so far with 153 convolution layers received a top-5 classification error of 4.9% (which is slightly better than human accuracy). By introducing residual connections (skip connections) between an input and the filter activation (as shown in the following figure), the network can learn incremental changes instead of a complete new behavior. This concept is similar to the parallel inception modules while only one filter learns the incremental changes between an input volume and its activation.
+Microsoft's residual network ResNet, the winner from ImageNet 2015 and the deepest network so far with 153 convolution layers received a top-5 classification error of 4.9% (which is slightly better than human accuracy, Source: Karpathy). By introducing residual connections (skip connections) between an input and the filter activation (as shown in the following figure), the network can learn incremental changes instead of a complete new behavior. This concept is similar to the parallel inception modules while only one filter learns the incremental changes between an input volume and its activation.
 
 ![Residual connections]({{ site.baseurl }}/images/deep-learning/residual.png "Residual connections"){: .image-col-1}
 Residual connections (Source: [stackexchange.com][skip-connections])
@@ -186,13 +186,13 @@ In a localization task, the model needs to identify the position of an object in
 
 In the simplest case with only one object in the image, the localization task can also be solved by predicting its bounding box coordinates. This is a regression problem and can be solved with a similar architecture as classification. DNNs for bounding box localization are mostly used for cropping raw input images as a preprocessing step for other applications (such as classification).
 
-A common architecture of DNNs to solve a localization task as regression is $$IN \to [[CONV\to ReLU] \cdot N \to POOL?] \cdot M \to [FC \to ReLU] \cdot K \to FC$$, where input $$IN$$ is a single image and output $$FC$$ is a fully connected layer with $$4$$ units (the bounding box can be identified with the coordinates of its left-top corner, width and height). The bounding box regression can be used in combination with classification, such that bounding box coordinates can be learned for each class individually. Both methods can be combined in one DNN with one classification and one regression output.
+A common architecture of DNNs to solve a localization task as regression uses a fully connected layer with $$4$$ units (the bounding box can be identified with the coordinates of its left-top corner, width and height) in the last layer followed by a sigmoid layer. The bounding box regression can be used in combination with classification, such that bounding box coordinates can be learned for each class individually. Both methods can be combined in one DNN with one classification and one regression output.
 
 The bounding box approach can be applied when the exact number of objects in the image is known and the image dimensions of the input images are fixed. The localization precision is bound by the rectangle geometry of the bounding box; however, also other shapes such as skewed rectangles, circles, or parallelograms can be used.
 
 ### Object Detection and Image Recognition
 
-To understand the context of images, one has to not only classify an image, but also find multiple different objects in an image and estimate their position. This application of classifying and localizing multiple objects in an image is referred to as *Object Detection*. Using DNN for object detection has the advantage that it can implicitly learn complex object representations instead of manually deriving them from a kinematic model, such as a Deformable Part-based Model (DPM).
+To understand the context of images, one has to not only classify an image, but also find multiple different object instances in an image and estimate their position. This application of classifying and localizing multiple objects in an image is referred to as *Object Detection*. Using DNN for object detection has the advantage that it can implicitly learn complex object representations instead of manually deriving them from a kinematic model, such as a Deformable Part-based Model (DPM).
 
 A common approach to implement object detection is a binary mask regression for each object type combined with predicting the bounding box coordinates, which results into at least 1 model per object type. This method works on both the complete image or image patches as an input, as long as the size of the input tensor is fixed. While this approach is simple a yields on average 0.15% improvement in precision compared to [traditional DPMs](#Szegedy13), it requires one DNN per object type. Another difficulty are overlapping objects of the same type, as these objects are not separable in the binary mask.
 
@@ -204,9 +204,9 @@ Image Recognition through Object Detection (Source: [He](#He15))
 
 ### Segmentation
 
-The application of *Segmentation* is to partition parts of an image with pixel precision, hence predicting the corresponding segment for each pixel. Thus, the network needs to predict a class value for each input pixel. convolutions and pooling both reduce the spatial dimension of the activations throughout the network which leads to the problem that the resulting activation has a smaller size than the input volume. Therefore, DNNs for segmentation need to implement an upscale strategy in order to predict these classes.
+The application of *Segmentation* is to partition parts of an image with pixel precision, hence predicting the corresponding segment for each pixel. Thus, the network needs to predict a class value for each input pixel. convolutions and pooling both reduce the spatial dimension of the activations throughout the network which leads to the problem that the resulting activation has a smaller size than the input volume. Therefore, DNNs for segmentation need to implement an upscale strategy in order to predict per pixel.
 
-To train a DNN for segmentation one can either input the whole image to the network and use a segmented image as ground truth (binary mask for foreground/background segmentation or [pixel mask](#Long14) displayed in the subsequent figure or follow a patch based approach. Using pixelwise CNNs, one can achieve up to [20% relative improvement in accuracy](#Long14).
+To train a DNN for segmentation one can either input the whole image to the network and use a segmented image as ground truth (binary mask for foreground/background segmentation or [pixel mask](#Long14) displayed in the subsequent figure) or follow a patch based approach. Using pixelwise CNNs, one can achieve up to [20% relative improvement in accuracy](#Long14).
 
 Similar to localization, segmentation can be turned into a classification problem, when using images patches of a fixed size. Instead of sliding a window over all possible locations, one can extract patches only from salient regions or distinctive segments. This approach has the advantage, that multiple patches can be stacked together as channels in the input layer to provide the network with positive and negative (or neutral) samples at the same time. This pairwise training can correct unbalanced class distributions and [optimize gradient computation](#Long14).
 
@@ -230,7 +230,7 @@ Instance segmentation is often referred to as [*simultaneous detection and segme
 
 ### Image Encoding
 
-A very common task if DNNs is image encoding, hence transforming and image from its original representation to a lower dimensional feature space. This task is commonly done due to the fact that the last fully-connected layer of each DNN learns this encoding implicitly while training on a specific supervised task. At the end of the task, the last fully-connected layer than contains a fixed-sized internal representation of the dataset that can be used as an input for conventional machine learning approaches such as SVM, linear regression, etc.
+A very common task of DNNs is image encoding, hence transforming and image from its original representation to a lower dimensional feature space. This task is often performed implicitly due to the fact that the last fully-connected layer of each DNN learns this encoding automatically while trained on a specific supervised task. At the end of the training, the last fully-connected layer contains a fixed-sized low-dimensional numeric representation of the input image that can be used as an input for conventional machine learning approaches such as SVM, linear regression, etc.
 
 Using up-convolutional structures, one can also implement unsupervised auto-encoding networks. However, due to the implicit learning through classification and the high computational complexity of up-convolutional networks this is mostly done by training on a supervised method such as classification.
 
