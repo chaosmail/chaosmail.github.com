@@ -41,7 +41,7 @@ Let's find this function in the [source code][ambari-StageUtils] and look at the
 server_hostname = InetAddress.getLocalHost().getCanonicalHostName().toLowerCase();
 ```
 
-Now we know, that the `_HOST` variable in a Kerberos principals will be replaced with the output of the `getCanonicalHostName()` function (which is implemented in the standard library in the package `java.net.InetAddress`) when  autogenerating principals with Ambari.
+Now we know, that the `_HOST` variable in a Kerberos principal will be replaced with the output of the `getCanonicalHostName()` function (which is implemented in the standard library in the package `java.net.InetAddress`) when  autogenerating principals with Ambari.
 
 ## Testing the hostname
 
