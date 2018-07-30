@@ -7,7 +7,7 @@ tags: hackathon office
 comments: true
 ---
 
-In the 2018 MS Hack global Microsoft Hackathon, I joined the *Smart Outlook* project in order to develop a few principles to make your daily work in Outlook more productive. We came up with a few ideas, mainly about enhancing folders, categories, and focus inbox as well as notificaitons about new emails. We build a [mock UI][smart-outlook-demo] to visualize the idea of our solution; the code is available on [Github][smart-outlook-code]. 
+In the 2018 MS Hack global Microsoft Hackathon, I joined the *Smart Outlook* project in order to develop a few principles to make your daily work in Outlook more productive. We came up with a few ideas, mainly about enhancing folders, categories, and focus inbox as well as notifications about new emails. We build a [mock UI][smart-outlook-demo] to visualize the idea of our solution; the code is available on [Github][smart-outlook-code]. 
 
 ## Idea
 
@@ -22,7 +22,7 @@ The following tools are available to categorize emails:
 
 Both *Custom Folders* and *Categories* are set manually or with manually-created rules whereas *Junk Folder* and *Focus Inbox* are set automatically. We receive an email notification for every email received in the inbox.
 
-To make Outlook more efficient, we want to merge *Custom Folders* and *Focus Inbox (Tabs)* into *Smart Tabs*. *Smart Tabs* can be created within hierarchies like traditional folders. Emails can be dragged into *Smart Tabs* like traditional folders and each email can only belong to one single *Smart Tab*. However unlike traditional folders, the number of unread emails is added up with all parent tabs. According to the manual assignment of emails to *Smart Tabs*, a Machine Learning algorithm trains/finetunes a model based on content/subject semantics as well as email and organisational metadata and moves new emails to the most likely tab (or inbox). During setup, common *Smart Tabs* are created for you such as *Team*, *Notificaitons*, *News*, *Org Updates*, *Customers*, *External*, etc.
+To make Outlook more efficient, we want to merge *Custom Folders* and *Focus Inbox (Tabs)* into *Smart Tabs*. *Smart Tabs* can be created within hierarchies like traditional folders. Emails can be dragged into *Smart Tabs* like traditional folders and each email can only belong to one single *Smart Tab*. However unlike traditional folders, the number of unread emails is added up with all parent tabs. According to the manual assignment of emails to *Smart Tabs*, a Machine Learning algorithm trains/finetunes a model based on content/subject semantics as well as email and organizational metadata and moves new emails to the most likely tab (or inbox). During setup, common *Smart Tabs* are created for you such as *Team*, *Notifications*, *News*, *Org Updates*, *Customers*, *External*, etc.
 
 To focus on only relevant notifications, any of your *Smart Tabs* can be pinned to the top. You will only receive notifications from new emails in your pinned tabs. We merged the UI of the Outlook web client with the UI of Edge browser to create these Tab UI. We built a [mock UI][smart-outlook-demo] to visualize the idea of our solution; the code is available on [Github][smart-outlook-code].
 
@@ -35,7 +35,7 @@ What did we implement on the hackathon:
 * Mock UI
     - Smart Tabs: A merge between classic folders and Focus/Other tabs. Mails should be classified automatically (based on previous user interactions) and put into those smart tabs. This tabs will also appear on the left the same folders did.
     - Focus Mode: Smart tabs can be pinned as tabs to the top. Then the user receives notifications solely on the current open tabs.
-    ○ UI: We tried to merge functionality of Outlook Windows client and Outlook.com Web client with the simple/clean UI of Edge into a single tab-based email UI
+    - UI: We tried to merge functionality of Outlook.com Web client with the simple/clean UI of Edge into a single tab-based email UI
 * ML API Endpoint
     - Labeled a custom email dataset
     - Trained simple ML model with semantic features in Python
