@@ -4,17 +4,23 @@ title: About
 permalink: /about/
 ---
 
-Hi, my name is Christoph Körner and I am a passionate software engineer, author and community addict. Here is everything you need to know about me.
+Hi, my name is Christoph Koerner and I am a passionate software engineer, author and community addict. Here is everything you need to know about me.
 
-* Master Student in Computer Science (Visual Computing) at Vienna University of Technology focusing on Machine Learning, Computer Vision and Graphics
+* TSP Data & AI at Microsoft
 
-* Data Scientist at T-Mobile Austria where I build large-scale unsupervised machine learning models
+* Previously: Big Data Tech Lead at T-Mobile Austria where I built large-scale unsupervised machine learning models
 
-* CTO of the Swiss startup company [GESIM](http://gesim.ch) where we develop simulations to increase utilization (thus decrease costs and CO2-emissions) of big buildings such as universities, schools and office buildings
+* Previously: CTO of the Swiss startup company [GESIM](http://gesim.ch) where we develop simulations to increase utilization (thus decrease costs and CO2-emissions) of big buildings such as universities, schools and office buildings
 
-* Author of the book [Interactive data visualizations with AngularJS and D3](https://www.packtpub.com/web-development/data-visualization-d3-and-angularjs) published by Packt Publishing in early 2015, Bestseller Q2 2015
+* Previously: Master Student in Computer Science (Visual Computing) at Vienna University of Technology focusing on Machine Learning, Computer Vision and Graphics
+
+* Previously: BSc in Electrical Engineering and Information Technology at Vienna University of Technology
+
+* Co-author of the book [Deep Learning in the Browser](https://bleedingedgepress.com/deep-learning-browser/) published by Bleeding Edge Press in mid 2018
 
 * Author of the book [Learning Responsive Data Visualization](https://www.amazon.com/Learning-Responsive-Visualization-Christoph-Korner/dp/178588378X/) published by Packt Publishing in early 2016
+
+* Author of the book [Interactive data visualizations with AngularJS and D3](https://www.packtpub.com/web-development/data-visualization-d3-and-angularjs) published by Packt Publishing in early 2015, Bestseller Q2 2015
 
 * Organizer of the [ViennaKaggle](http://viennakaggle.github.io/) Meetup in collaboration with [Ben Freundorfer](https://twitter.com/benfreu) and active Speaker at many other Meetups in Vienna (ViennaJS, AngularJS, Computer Vision, Spark, Deep Learning, Hadoop User Group, etc.)
 
