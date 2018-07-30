@@ -26,6 +26,8 @@ To make Outlook more efficient, we want to merge *Custom Folders* and *Focus Inb
 
 To focus on only relevant notifications, any of your *Smart Tabs* can be pinned to the top. You will only receive notifications from new emails in your pinned tabs. We merged the UI of the Outlook web client with the UI of Edge browser to create these Tab UI. We built a [mock UI][smart-outlook-demo] to visualize the idea of our solution; the code is available on [Github][smart-outlook-code].
 
+![Smart Tabs UI]({{ site.baseurl }}/images/projects/smart-outlook-mock-ui.png "Smart Tabs UI"){: .image-col-1}
+
 > A blog post about deploying a static website to Azure can be found in the [Azure Blog][azure-static-website].
 
 ## Execution
