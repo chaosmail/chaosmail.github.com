@@ -19,10 +19,10 @@ If you don't have an Azure account then you can request an API key from the [Bin
 
 There are 2 types of queries available in the Locations API, structured and unstructured queries. In this example we will use an unstructured query to query the API with a search term. However, you can also find examples using structured queries on the [Bing Maps Location API][bing-maps-api-locations] documentation.
 
-Let's find the geolocation of Howth an Irish village in east central Dublin.
+Let's find the geolocation of Howth an Irish village in east central Dublin. To run this, you have to replace the `<accesskey>` placeholder with you own access key in the following snippet.
 
 ```sh
-$ curl http://dev.virtualearth.net/REST/v1/Locations?query=Howth+Dublin&include=queryParse&key=accesskey&output=json
+$ curl http://dev.virtualearth.net/REST/v1/Locations?query=Howth+Dublin&include=queryParse&key=<accesskey>&output=json
 
 {
   "authenticationResultCode": "ValidCredentials",
