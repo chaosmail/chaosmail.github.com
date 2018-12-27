@@ -6,6 +6,32 @@ permalink: /projects/
 
 Here is an overview of some of the open source projects that I worked on during the past years.
 
+## Tensorflow.js ONNX Runner
+
+After successfully running pre-trained Caffe models in the browser without any modifications, I thought about a more general approach of porting pre-trained models to the web. Hence, I decided to look into the [ONNX][web-onnx] (Open Neural Net Exchange Format) specification. ONNX is a format aimed for interchanging pre-trained models between different runtimes and looks perfect for my use-case.
+
+The [Tensorflow.js ONNX Runner][github-tfjs-onnx] is a proof of concept implementation for running arbitrary ONNX models in the browser using [Tensorflow.js][github-tfjs]. This means that we could run any model from any framework supporting ONNX (PyTorch, Caffe2, CNTK, Tensorflow, Core ML etc.) in the browser without modification.
+
+The code is as simple as loading the ONNX model from a path and using it as a Tensorflow model - as shown in the following example:
+
+```javascript
+var modelUrl = 'models/squeezenet/model.onnx';
+
+// Initialize the tf.model
+var model = new onnx.loadModel(modelUrl);
+
+// Now use tf.model
+const pixels = tf.fromPixels(img);
+const predictions = model.predict(pixels);
+```
+
+For production use-cases, a better approach would be to convert the ONNX model to a tfjs model using the [Tensorflow.js converter module][github-tfjs-converter]. This also allows the developers to optimize the model for the usage in the browser.
+
+[github-tfjs-onnx]: https://github.com/chaosmail/tfjs-onnx
+[github-tfjs]: https://github.com/tensorflow/tfjs
+[github-tfjs-converter]: https://github.com/tensorflow/tfjs-converter
+[web-onnx]: https://onnx.ai/
+
 ## CaffeJS - Running Caffe models in the browser
 
 [CaffeJS][github-caffejs] started as a proof of concept for porting Caffe models to the browser using a modified version of [ConvNetJS (by Andrej Karpathy)](http://convnetjs.com). At first, I only wanted to parse Caffe architectures from `*.prototxt` in order to [visualize and analyze](https://chaosmail.github.io/caffejs/models.html) the flow of activations through the network.
