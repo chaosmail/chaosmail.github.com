@@ -31,6 +31,8 @@ I find this definition very concise and understandable but a bit imprecise which
 
 *Big Data* systems are distributed systems that are built to handle these types of data of high volume, velocity and variety. Apache Hadoop and Apache Spark are popular Big Data frameworks for large-scale distributed processing. We will learn the similarities and differences in the following sections.
 
+> Please note that other definitions vary slightly and you will find 4 or even more **V**s, such as *Veracity* for example. *Veracity* refers to the trustworthiness of the data and hence how useful your data actually is. While these extended definitions are relevant for Big Data, they don't necessarily apply *only* to Big Data systems or require *Big Data* systems in my opinion.
+
 ### What can we do with Big Data
 
 The reason for using Big Data systems is to store and process massive amounts of data. We can categorize these efforts into 3 different use-cases of increasing difficulty. The use cases are:
@@ -131,6 +133,8 @@ Apache Spark is a fast (100 times faster than traditional MapReduce) distributed
 * [Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing (2011)][spark-paper]
 * [Apache Tez: A Unifying Framework for Modeling and Building Data Processing Applications (2015)][tez-paper]
 * [Impala: A Modern, Open-Source SQL Engine for Hadoop (2015)][impala-paper]
+
+Thanks to Bryan Minnock and Emil Jorgensen.
 
 [bigdata-wiki]: https://en.wikipedia.org/wiki/Big_data
 [hadoop-wiki]: https://en.wikipedia.org/wiki/Apache_Hadoop
