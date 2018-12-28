@@ -57,21 +57,32 @@ In *Prediction*, we analyze the past to build a model that can predict the futur
 
 **HDFS** (Hadoop FileSystem) is a distributed filesystem that stores and replicates data across multiple nodes. HDFS is the open-source implementation of the [Google File System (GFS)][gfs-paper] paper published by Jeff Dean and Sanjay Ghemawat in 2003. It consists of a *name node* (master) and multiple *data node* services (client, usually 1 per node). The *name node* stores the references to the data blobs and takes care of the filesystem management, meta operations and file access operations. The *data nodes* are responsible for storing the data blobs on the local filesystem of the nodes.
 
-**MapReduce** is a [theoretical concept for distributed processing][mapreduce-paper] published by Jeff Dean and Sanjay Ghemawat in 2004 and an open-source implementation in the repository of Apache Hadoop. Both, the  open-source implementation of MapReduce as well as HDFS were a cornerstone of Hadoop 1 and responsible for its success. We will learn a bit more about the MapReduce concept in the subsequent section.
+**MapReduce** is a [theoretical concept for distributed processing][mapreduce-paper] published by Jeff Dean and Sanjay Ghemawat in 2004 and an open-source implementation in the repository of Apache Hadoop. Both, the  open-source implementation of MapReduce as well as HDFS were a cornerstone of Hadoop 1 and responsible for its success. In Hadoop 1, MapReduce ran as a service directly on top of the *data nodes*.
 
-**Apache Yarn** is a distributed resource manager and job scheduler responsible for managing the node resources (CPU and RAM) of the cluster and for scheduling jobs on the cluster. It consists of a *resource manager* (master) and multiple *node manager* services (client, 1 per node). Yarn (acronym for *Yet Another Resource Negotiator*) was added in Hadoop 2 to decouple the MapReduce engine from the cluster resource management.
+In the MapReduce concept from 2004, we limit the amount of operations to *Map* and *Reduce*. The *Map* operation is a simple transformation of key/value tuples whereas the *Reduce* operation is an aggregation of values by key. In between both phases during the *Shuffle*, the data of the same key is loaded to the local disk of the same nodes. Multiple of these MapReduce phases can be executed in sequence where each output is written back to HDFS. The paper of Dean and Ghemawat shows that once an algorithm is written in MapReduce operations, it can automatically be parallelized on a distributed system. It also shows that many complex algorithms can be written in MapReduce style (such as Reverse Web-Link Graph, Inverted Index, Distributed Sort, etc.).
+
+**Apache Yarn** (acronym for *Yet Another Resource Negotiator*) is a distributed resource manager and job scheduler responsible for managing the node resources (CPU and RAM) of the cluster and for scheduling jobs on the cluster. It consists of a *resource manager* (master) and multiple *node manager* services (client, 1 per node). Yarn was added in Hadoop 2 to decouple the MapReduce engine from the cluster resource management.
 
 As an application developer, one usually doesn't communicate with Yarn directly but with a framework or processing/execution engine on top of Yarn such as MapReduce, Tez or Spark. Analysts and Data Scientists often use a higher-level abstraction or API for distributing the code on the cluster and to access the data, such as Hive, Pig or Spark SQL.
 
 Although not managed in the same repository as Apache Hadoop, I often like to mention Apache Zookeeper as another integral building block of Hadoop. **Apache Zookeeper** is a distributed synchronized transaction-based in-memory key-value store. Many Hadoop services use Zookeeper for storing dynamic configuration (available nodes per partition, current master, etc.), leader election, synchronization, and much more.
 
-There are many other services related or included with the Hadoop stack. Most of these service either run on top of HDFS and/or Yarn or leverage Zookeeper for synchronization and leader election. Here is a (small) list of distributed Hadoop services:
+There are many other services related or included with the Hadoop stack. Most of these service run on top of Hadoop because they utilize one or more of its main components:
+
+* HDFS as distributed storage
+* Yarn as resource manager
+* Zookeeper for synchronization and leader election
+* Hive as a Metastore
+
+Here is a (small) list of distributed services on Hadoop:
 
 * Batch Processing
   - Hive
   - Pig
   - MapReduce
   - Tez
+  - Druid
+  - Imapla
   - Spark
 * Stream processing
   - Storm
@@ -86,10 +97,6 @@ There are many other services related or included with the Hadoop stack. Most of
   - Solr (Inverted Document Index)
 
 Please keep in mind, that some of the above services don't necessarily need the Hadoop stack to run (e.g. Spark can run locally as a single process on top of a local filesystem).
-
-## MapReduce: Map, Reduce and Shuffle
-
-The MapReduce concept is an important milestone in the history of distributed processing. Hence, we will discuss it in a bit more detail in this section.
 
 ## Spark: The Evolution of MapReduce
 
@@ -108,7 +115,7 @@ Conceptually, Spark is similar to the other distributed processing frameworks:
 
 What sets *Apache Spark* aside from the other frameworks, is the in-memory processing engine as well as the rich set of included libraries (GraphX for graph processing, MLib for Machine Learning, Spark Streaming for mini batch streaming, and Spark SQL) and SDKs (Scala, Python, Java, and R). Please note that these libraries are for distributed processing, so distributed graph processing, distributed machine learning, etc. out-of-the-box.
 
-The amazing performance of Spark's in-memory engine comes with a trade-off. Tuning and operating Spark pipelines with varying amounts of data requires a lot of manual configuration, going through log files, and reading books, articles, and blog posts. And since the execution parallelism can be modified in a fine-grained way, one has to configure the number of tasks per JVM, the number of JVMs per worker, and the number of workers as well as all the memory settings (heap, shuffle, and storage) for these executors and the driver.
+The amazing performance of Spark's in-memory engine comes with a trade-off. Tuning and operating Spark pipelines with varying amounts of data requires a [lot of manual configuration](https://spark.apache.org/docs/latest/tuning.html), going through log files, and reading books, articles, and blog posts. And since the execution parallelism can be modified in a fine-grained way, one has to configure the number of tasks per JVM, the number of JVMs per worker, and the number of workers as well as all the memory settings (heap, shuffle, and storage) for these executors and the driver.
 
 ## Summary
 
@@ -134,7 +141,7 @@ Apache Spark is a fast (100 times faster than traditional MapReduce) distributed
 * [Apache Tez: A Unifying Framework for Modeling and Building Data Processing Applications (2015)][tez-paper]
 * [Impala: A Modern, Open-Source SQL Engine for Hadoop (2015)][impala-paper]
 
-Thanks to Bryan Minnock and Emil Jorgensen.
+> Thanks to Bryan Minnock and Emil Jorgensen.
 
 [bigdata-wiki]: https://en.wikipedia.org/wiki/Big_data
 [hadoop-wiki]: https://en.wikipedia.org/wiki/Apache_Hadoop
