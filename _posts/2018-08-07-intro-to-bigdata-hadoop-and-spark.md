@@ -102,7 +102,7 @@ Please keep in mind, that some of the above services don't necessarily need the 
 
 [Apache Spark][spark-web] got [popular in 2014][spark-wiki] as a fast general-purpose compute framework for distributed processing which claimed to be more than 100 times faster than the traditional MapReduce implementation. It provides high level operations for working with distributed data sets which are optimized and executed in-memory of the cluster nodes. Spark runs on top of multiple resource managers such as Yarn or Mesos and can even run locally as a single process (standalone execution mode).
 
-Conceptually, Spark is similar to the other distributed processing frameworks:
+Conceptually, Spark's execution engine is similar to the other distributed processing frameworks:
 
 * [MapReduce: Simplified Data Processing on Large Clusters][mapreduce-paper]
 * [Tez: A Unifying Framework for Modeling and Building Data Processing Applications][tez-paper]
@@ -113,7 +113,13 @@ Conceptually, Spark is similar to the other distributed processing frameworks:
 
 *Apache Impala* is a [Big Data SQL engine][impala-web-overview] on top of HDFS, HBase and Hive (Metastore) with its own specialized distributed query engine. It is the default engine for Apache Hive on the Cloudera and MapR Hadoop distributions.
 
-What sets *Apache Spark* aside from the other frameworks, is the in-memory processing engine as well as the rich set of included libraries (GraphX for graph processing, MLib for Machine Learning, Spark Streaming for mini batch streaming, and Spark SQL) and SDKs (Scala, Python, Java, and R). Please note that these libraries are for distributed processing, so distributed graph processing, distributed machine learning, etc. out-of-the-box.
+As we can see in the following figure, the main differences from the newer processing frameworks (Tez, Impala, and Spark) compared to the traditional MapReduce engine (left) is that they avoid writing intermediate results to HDFS and heavily optimize the execution graph. Another optimization strategy is processing/caching data in memory of the local nodes across the execution graph.
+
+![MapReduce vs. Tez/Impala/Spark]({{ site.baseurl }}/images/hadoop/mr_tez_spark.png "MapReduce vs. Tez/Impala/Spark"){: .image-col-1}
+
+Traditional MapReduce (left) vs. Tez/Impala/Spark optimized engines (right) (Source: [hortonworks.com][tez-blog])
+
+What sets *Apache Spark* aside from the other frameworks, is the in-memory processing engine as well as the rich set of included libraries (GraphX for graph processing, MLib for Machine Learning, Spark Streaming for mini batch streaming, and Spark SQL) and SDKs (Scala, Python, Java, and R). Please note that these libraries are for *distributed* processing, so distributed graph processing, distributed machine learning, etc. out-of-the-box.
 
 The amazing performance of Spark's in-memory engine comes with a trade-off. Tuning and operating Spark pipelines with varying amounts of data requires a [lot of manual configuration](https://spark.apache.org/docs/latest/tuning.html), going through log files, and reading books, articles, and blog posts. And since the execution parallelism can be modified in a fine-grained way, one has to configure the number of tasks per JVM, the number of JVMs per worker, and the number of workers as well as all the memory settings (heap, shuffle, and storage) for these executors and the driver.
 
