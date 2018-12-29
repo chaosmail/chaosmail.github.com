@@ -7,11 +7,14 @@ tags: bigdata hadoop spark
 comments: true
 ---
 
-Everyone is speaking about *Big Data* and *Data Lakes* these days. Many technical folks see [Apache Spark][spark-web] as *the* solution to *every* problem. At the same time, [Apache Hadoop][hadoop-web] has been around since [more than 10 years][hadoop-wiki] now and won't go away anytime soon. In this blog post I want to give a brief introduction to Big Data, demystify some of the main concepts such as Map Reduce, and highlight the similarities and differences between Hadoop and Spark.
+Everyone is speaking about *Big Data* and *Data Lakes* these days. Many ~~technical folks~~ IT Professionals see [Apache Spark][spark-web] as *the* solution to *every* problem. At the same time, [Apache Hadoop][hadoop-web] has been around for [more than 10 years][hadoop-wiki] and won't go away anytime soon. In this blog post I want to give a brief introduction to Big Data, demystify some of the main concepts such as Map Reduce, and highlight the similarities and differences between Hadoop and Spark.
 
 ## Big Data
 
-Big Data is everywhere, we hear it everywhere and we use it everywhere. But what does it actually mean and what precisely can we do with it? We will try to answer these 2 questions in this section.
+You hear about Big Data everywhere. But what does it actually mean and what precisely can we do with it? We will try to answer these 2 questions in this section.
+
+*EAJ: In this sections I feel like I am missing something about why Big Data is a relevant topic - instead of starting with "what it is", emphasizing why is it relevant might be a good idea. Maybe from a practical example of how a specific problem turned out to be a "big data" problem (not focusing on the solutions, but the nature of the problems). Discuss how these types of problems become more and more frequent - then move on with how to identify them. Just a bit of spitballing...*
+
 
 ### What is Big Data
 
@@ -23,13 +26,15 @@ What is *Big Data*? Have you ever heard of the popular definition of Big Data wi
 
 I find this definition very concise and understandable but a bit imprecise which is probably intentional. Here is a more practical definition of what the 3 **V**s stand for, based on my own experiences.
 
-*Volume* describes a large amount of data you want to store, process or analyze. If we are speaking in terms of 100s of GBs to TBs to PBs then we are speaking about Big Data. An important rule of thumb is also the increase of the data. When your data is growing multiple GBs per day, it is probably Big Data.
+*Volume* describes a large amount of data you want to store, process or analyze. If we are speaking in terms of 100s of GBs to TBs to PBs then we are speaking about Big Data. An important aspect to consider, is the data growth. As a rule of thumb: If your data is growing by multiple GBs per day, you are probably dealing with Big Data.
 
-*Velocity* means a high data throughput you want to store, process or analyze; often a large amount of data over a short period of time. When we are dealing with processing of 10.000s to 100.000s to millions of records per second, then we are speaking of Big Data.
+*Velocity* means a high data throughput to be stored, processed and/or analyzed; often a large amount of data over a short period of time. When we are dealing with processing of 10.000s to millions of records per second, then we are most likely speaking of Big Data.
 
 *Variety* stands for the large amount of different data types that can be stored, processed or analyzed. This means we want to process any kind of data, be it binary, text, structured, unstructured, compressed, uncompressed, nested, flat, etc.
 
-*Big Data* systems are distributed systems that are built to handle these types of data of high volume, velocity and variety. Apache Hadoop and Apache Spark are popular Big Data frameworks for large-scale distributed processing. We will learn the similarities and differences in the following sections.
+*EAJ: for me the variety isn't necessarily a Big Data characteristic either (like what you mention about Veracity). It typically is; but it certainly doesn't make something a Big Data problem by itself, nor is it necessarily present in all Big Data Systems - although you are right about the frameworks being built to handle it. I do agree that it is tied closer to Big Data than the Veracity/Reliability of the data generating process.*
+
+*Big Data* systems are built to handle data of high volume, velocity and variety. Apache Hadoop and Apache Spark are popular Big Data frameworks for large-scale distributed processing. We will learn the similarities and differences in the following sections.
 
 > Please note that other definitions vary slightly and you will find 4 or even more **V**s, such as *Veracity* for example. *Veracity* refers to the trustworthiness of the data and hence how useful your data actually is. While these extended definitions are relevant for Big Data, they don't necessarily apply *only* to Big Data systems or require *Big Data* systems in my opinion.
 
@@ -41,33 +46,43 @@ The reason for using Big Data systems is to store and process massive amounts of
 * Prediction
 * Modeling
 
-In classical *Analytics*, we analyze the past. In Big Data, we analyze massive amounts of data from the past. A typical question to answer with analytics could be to compute the number of visitors of the previous season based on all bookings of said season.
+In classical *Analytics*, we analyze historical/observed data. In Big Data, we analyze massive amounts of such data. A typical question to answer with analytics could be how to compute the number of visitors of the previous season based on all bookings of said season.
 
-In *Prediction*, we analyze the past to build a model that can predict the future (are other unknowns). We often use statistical methods (such as Logistic Regression, etc.) as well as Machine Learning (SVM, Gradient Boosted Trees, Deep Learning, etc.) techniques to build these models. A typical question to answer with prediction could be to forecast the number of visitors for the next season based on all bookings of all previous seasons.
+In *Prediction*, we analyze the past to build a model that can predict the future (are other unknowns). We often use statistical methods (such as Generalized Linear Models, Logistic Regression, etc.) as well as Machine Learning (SVM, Gradient Boosted Trees, Deep Learning, etc.) techniques to build these models. A typical question to answer with prediction could be to forecast the number of visitors for the next season based on all bookings of all previous seasons.
+
+*EAJ: personally I don't like to think of prediciton as having something to do with predicting futures - that is but one type of inference problem. In more general terms, it could probably be described as "attempting to say something about the unobserved, based on what has been observed"*
 
 *Modeling* builds on both analytics and prediction capabilities. In *Modeling*, the aims is to analyze the past and build a model to predict different possibilities of the future depending on the model parameters. These models are often more complicated than a simple statistical or Machine Learning model and take into account multiple state variables and parameters that can be modified. A typical question to answer with modeling could be to forecast the number of visitors for the next season if the winter will be two weeks shorter based on all bookings of all previous seasons plus loads of additional data sources (weather data, etc.).
+
+*EAJ: for me it makes more sense to distinguish between modelling for the purpose of prediction and modelling for the purpose of gaining insights about mechanisms (often about causality). These are two very different goals, which still work well with your examples. I was about to write up something about intepretable parameters and inference, but that is probably going too deep for this post.*
 
 ## Hadoop: HDFS, Yarn and MapReduce
 
 [Apache Hadoop][hadoop-web] is a framework for storing and processing massive amounts of data on commodity hardware. It is a collection of services that sit together in the [Hadoop repository][hadoop-repo].
 
-* Hadoop FileSystem (HDFS): a distributed file system
+* Hadoop Distributed File System (HDFS): a distributed file system 
 * Apache Yarn: a cluster resource manager
 * MapReduce: a high-level framework for distributed processing
 
-**HDFS** (Hadoop FileSystem) is a distributed filesystem that stores and replicates data across multiple nodes. HDFS is the open-source implementation of the [Google File System (GFS)][gfs-paper] paper published by Jeff Dean and Sanjay Ghemawat in 2003. It consists of a *name node* (master) and multiple *data node* services (client, usually 1 per node). The *name node* stores the references to the data blobs and takes care of the filesystem management, meta operations and file access operations. The *data nodes* are responsible for storing the data blobs on the local filesystem of the nodes.
+**HDFS** (Hadoop Distributed File System) is a distributed filesystem that stores and replicates data across multiple nodes. HDFS is the open-source implementation of the [Google File System (GFS)][gfs-paper] paper published by Jeff Dean and Sanjay Ghemawat in 2003. It consists of a *name node* (master) and multiple *data node* services. The *name node* stores the references to the data blobs and takes care of the filesystem management, meta operations and file access operations. The *data nodes* are responsible for storing the data blobs on the local filesystem of the nodes.
 
 **MapReduce** is a [theoretical concept for distributed processing][mapreduce-paper] published by Jeff Dean and Sanjay Ghemawat in 2004 and an open-source implementation in the repository of Apache Hadoop. Both, the  open-source implementation of MapReduce as well as HDFS were a cornerstone of Hadoop 1 and responsible for its success. In Hadoop 1, MapReduce ran as a service directly on top of the *data nodes*.
 
 In the MapReduce concept from 2004, we limit the amount of operations to *Map* and *Reduce*. The *Map* operation is a simple transformation of key/value tuples whereas the *Reduce* operation is an aggregation of values by key. In between both phases during the *Shuffle*, the data of the same key is loaded to the local disk of the same nodes. Multiple of these MapReduce phases can be executed in sequence where each output is written back to HDFS. The paper of Dean and Ghemawat shows that once an algorithm is written in MapReduce operations, it can automatically be parallelized on a distributed system. It also shows that many complex algorithms can be written in MapReduce style (such as Reverse Web-Link Graph, Inverted Index, Distributed Sort, etc.).
 
-**Apache Yarn** (acronym for *Yet Another Resource Negotiator*) is a distributed resource manager and job scheduler responsible for managing the node resources (CPU and RAM) of the cluster and for scheduling jobs on the cluster. It consists of a *resource manager* (master) and multiple *node manager* services (client, 1 per node). Yarn was added in Hadoop 2 to decouple the MapReduce engine from the cluster resource management.
+*EAJ: this is almost impossible to write understandably and concicely without an entire blog to address it. I think it is essential to really emphasize how HDFS and MapReduce were designed as one framework and either one would be somewhat pointless without the other. And that they are by no means "general purpose" solutions. Also maybe focus even more on clarify the distinction between the concept of MapReduce and the implementation of the MapReduce engine - I personally found this super confusing at first.*
 
-As an application developer, one usually doesn't communicate with Yarn directly but with a framework or processing/execution engine on top of Yarn such as MapReduce, Tez or Spark. Analysts and Data Scientists often use a higher-level abstraction or API for distributing the code on the cluster and to access the data, such as Hive, Pig or Spark SQL.
+**Apache Yarn** (acronym for *Yet Another Resource Negotiator*) is a distributed resource manager and job scheduler responsible for managing the node resources (CPU and RAM) of the cluster and for scheduling jobs on the cluster. It consists of a *resource manager* (master) and multiple *node manager* services (client, 1 per node). Yarn was introduced in Hadoop 2 to decouple the MapReduce engine from the cluster resource management.
+
+~~As an application developer, one usually doesn't communicate with Yarn directly but with a framework or processing/execution engine on top of Yarn such as MapReduce, Tez or Spark. Analysts and Data Scientists often use a higher-level abstraction or API for distributing the code on the cluster and to access the data, such as Hive, Pig or Spark SQL.~~ (Maybe not needed?)
 
 Although not managed in the same repository as Apache Hadoop, I often like to mention Apache Zookeeper as another integral building block of Hadoop. **Apache Zookeeper** is a distributed synchronized transaction-based in-memory key-value store. Many Hadoop services use Zookeeper for storing dynamic configuration (available nodes per partition, current master, etc.), leader election, synchronization, and much more.
 
-There are many other services related or included with the Hadoop stack. Most of these service run on top of Hadoop because they utilize one or more of its main components:
+*EAJ: How does this relate to/differ from the original hadoop 1 distribution?*
+
+*EAJ: To understand what it means to "run a service on top of Hadoop", I feel it is essential to understand what a typical Hadoop deployment looks like - what is run, managed and stored where - even if just as an example. I found this very difficult to wrap my head around.*
+
+There are many other services related to or included in the Hadoop stack. Most of these service run on top of Hadoop because they utilize one or more of its main components:
 
 * HDFS as distributed storage
 * Yarn as resource manager
@@ -96,11 +111,11 @@ Here is a (small) list of distributed services on Hadoop:
   - Kafka (Log Store)
   - Solr (Inverted Document Index)
 
-Please keep in mind, that some of the above services don't necessarily need the Hadoop stack to run (e.g. Spark can run locally as a single process on top of a local filesystem).
+~~Please keep in mind, that some of the above services don't necessarily need the Hadoop stack to run (e.g. Spark can run locally as a single process on top of a local filesystem).~~ *(EAJ: Mainly just relevant for development purposes?)*
 
 ## Spark: The Evolution of MapReduce
 
-[Apache Spark][spark-web] got [popular in 2014][spark-wiki] as a fast general-purpose compute framework for distributed processing which claimed to be more than 100 times faster than the traditional MapReduce implementation. It provides high level operations for working with distributed data sets which are optimized and executed in-memory of the cluster nodes. Spark runs on top of multiple resource managers such as Yarn or Mesos and can even run locally as a single process (standalone execution mode).
+[Apache Spark][spark-web] got [popular in 2014][spark-wiki] as a fast general-purpose compute framework for distributed processing which claimed to be more than 100 times faster than the traditional MapReduce implementation. It provides high level operations for working with distributed data sets which are optimized and executed in-memory of the cluster nodes. Spark runs on top of multiple resource managers such as Yarn or Mesos ~~and can even run locally as a single process (standalone execution mode)~~.
 
 Conceptually, Spark's execution engine is similar to the other distributed processing frameworks:
 
