@@ -7,7 +7,7 @@ tags: bigdata hadoop spark
 comments: true
 ---
 
-Everyone is speaking about *Big Data* and *Data Lakes* these days. Many ~~technical folks~~ IT Professionals see [Apache Spark][spark-web] as *the* solution to *every* problem. At the same time, [Apache Hadoop][hadoop-web] has been around for [more than 10 years][hadoop-wiki] and won't go away anytime soon. In this blog post I want to give a brief introduction to Big Data, demystify some of the main concepts such as Map Reduce, and highlight the similarities and differences between Hadoop and Spark.
+Everyone is speaking about *Big Data* and *Data Lakes* these days. Many IT professionals see [Apache Spark][spark-web] as *the* solution to *every* problem. At the same time, [Apache Hadoop][hadoop-web] has been around for [more than 10 years][hadoop-wiki] and won't go away anytime soon. In this blog post I want to give a brief introduction to Big Data, demystify some of the main concepts such as Map Reduce, and highlight the similarities and differences between Hadoop and Spark.
 
 ## Big Data
 
@@ -26,17 +26,26 @@ What is *Big Data*? Have you ever heard of the popular definition of Big Data wi
 
 I find this definition very concise and understandable but a bit imprecise which is probably intentional. Here is a more practical definition of what the 3 **V**s stand for, based on my own experiences.
 
-*Volume* describes a large *amount of data* you want to store, process or analyze. If we are speaking in terms of 100s of GBs to TBs to PBs then we are speaking about Big Data. An important aspect to consider, is the data growth. As a rule of thumb: If your data is growing by multiple GBs per day, you are probably dealing with Big Data.
+*Volume* describes a large *amount of data* you want to store, process or analyze. If we are speaking in terms of 100s of GBs to TBs to PBs then we are speaking about Big Data. An important aspect to consider, the data growth. As a rule of thumb: If your data is growing by multiple GBs per day, you are probably dealing with Big Data.
 
-*Velocity* means a high *data throughput* to be stored, processed and/or analyzed; often a large amount of data over a short period of time. When we are dealing with processing of 10.000s to millions of records per second, then we are most likely speaking of Big Data.
+*Velocity* means a high *data throughput* to be stored, processed and/or analyzed; often a large amount of data over a short period of time. When we are processing thousands to millions of records per second, then we are most likely speaking of Big Data.
 
-*Variety* stands for the large amount of *different data types* that can be stored, processed or analyzed. This means we can process any kind of data, be it binary, text, structured, unstructured, compressed, uncompressed, nested, flat, etc. However, *variety* is rather a consequence of Big Data as all data is eventually stored on a distributed file system and so one has to care about different optimized file formats for different use-cases.
+*Variety* stands for the large amount of *different data types* that can be stored, processed or analyzed. This means one aims to process any kind of data, be it binary, text, structured, unstructured, compressed, uncompressed, nested, flat, etc. However, *variety* is rather a consequence of Big Data as all data is eventually stored on a distributed file system and so one has to care about different optimized file formats for different use-cases.
 
 *Big Data* systems are built to handle data of high volume, velocity and variety. Apache Hadoop and Apache Spark are popular Big Data frameworks for large-scale distributed processing. We will learn the similarities and differences in the following sections.
 
-> Please note that other definitions vary slightly and you will find 4 or even more **V**s, such as *Veracity* for example. *Veracity* refers to the trustworthiness of the data and hence how useful your data actually is. While these extended definitions are relevant for Big Data, they don't necessarily apply *only* to Big Data systems or require *Big Data* systems in my opinion.
+> Please note that other definitions vary slightly and you will find 4 or even more **V**s, such as *Veracity* for example. *Veracity* refers to the trustworthiness of the data and hence describes how useful your data actually is. While these extended definitions are relevant for Big Data, they don't necessarily apply *only* to Big Data systems or require *Big Data* systems in my opinion.
 
 ### What can we do with Big Data
+
+* Batch Processing
+    * Transformation, Join and Aggregation
+    * Analytics: (historical) Analytics, Prediction and Modeling
+* Stream Processing
+    * Transformation, Join and (temporal) Aggregation
+    * Analytics: (real-time) Analytics, Inferencing
+
+### Big Data Analytics
 
 The reason for using Big Data systems is to store and process massive amounts of data. We can categorize these efforts into 3 different use-cases of increasing difficulty. The use cases are:
 
@@ -46,9 +55,9 @@ The reason for using Big Data systems is to store and process massive amounts of
 
 In classical *Analytics*, we analyze historical/observed data. In Big Data, we analyze massive amounts of such data. A typical question to answer with analytics could be how to compute the number of visitors of the previous season based on all bookings of said season.
 
-In *Prediction*, we analyze the past to build a model that can predict the future. In more general terms, one fits a model on a set of training data to use it for inferring any unknown/unseen observation. We often use statistical methods (such as Generalized Linear Models, Logistic Regression, etc.) as well as Machine Learning (SVM, Gradient Boosted Trees, Deep Learning, etc.) techniques to build these models. A typical question to answer with prediction could be to forecast the number of visitors for the next season based on all bookings of all previous seasons.
+In *Prediction*, we analyze the past to build a model that can predict the future. In more general terms, one fits a model on a set of training data to use it for inferring any unknown/unseen observation. We often use statistical methods (such as Generalized Linear Models, Logistic Regression, etc.) as well as Machine Learning (SVM, Gradient Boosted Trees, Deep Learning, etc.) techniques to build these models. A typical question to answer with prediction could be how to forecast the number of visitors for the following season based on all bookings of previous seasons.
 
-*Modeling* builds on both analytics and prediction capabilities. In *Modeling*, the aims is to analyze the past and build a model to predict different possibilities of the future depending on the model parameters. These models are often more complicated than a simple statistical or Machine Learning model and take into account multiple state variables and parameters that can be modified. A typical question to answer with modeling could be to forecast the number of visitors for the next season if the winter will be two weeks shorter based on all bookings of all previous seasons plus loads of additional data sources (weather data, etc.).
+*Modeling* builds on both analytics and prediction capabilities. In *Modeling*, the aims is to analyze the past and build a model to predict different possibilities of the future depending on the model parameters. These models are often more complicated than a simple statistical or Machine Learning model and take into account multiple state variables and parameters that can be modified. A typical question to answer with modeling could be how to forecast the number of visitors for the following season if the winter will be two weeks shorter based on all bookings of previous seasons plus additional data sources (weather data, etc.).
 
 *EAJ: for me it makes more sense to distinguish between modelling for the purpose of prediction and modelling for the purpose of gaining insights about mechanisms (often about causality). These are two very different goals, which still work well with your examples. I was about to write up something about intepretable parameters and inference, but that is probably going too deep for this post.*
 
