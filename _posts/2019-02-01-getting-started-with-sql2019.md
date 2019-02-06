@@ -12,7 +12,7 @@ Microsoft latest [SQL Server][sql-server-2019] comes in a new version, the SQL S
 ## SQL Server 2019 for Big Data
 
 
-![SQL Server 2019 for Big Data architecture]({{ site.baseurl }}/images/hadoop/SQL-Server-2019-big-data-cluster.png "SQL Server 2019 for Big Data architecture"){: .image-col-1}
+![SQL Server 2019 for Big Data architecture]({{ site.baseurl }}/images/sql2019/SQL-Server-2019-big-data-cluster.png "SQL Server 2019 for Big Data architecture"){: .image-col-1}
 
 https://cloudblogs.microsoft.com/sqlserver/2018/09/25/introducing-microsoft-sql-server-2019-big-data-clusters/
 
@@ -68,6 +68,8 @@ Before you continue, make sure that both `kubectl` and `mssqlctl` commands are a
 ### Prerequisites: Azure Data Studio
 
 [Azure Data Studio][azure-data-studio] is a cross-platform management tool for Microsoft databases. It's like SQL Server Management Studio on top of the popular VS Code editor engine, a rich TSQL editor with IntelliSense and Plugin support. Currently, it's the easiest way to connect to the different SQL Server 2019 endpoints (SQL, HDFS, and Spark). To do so, you need to [install Data Studio][azure-data-studio-install] and the [SQL Server 2019 extension][azure-data-studio-install-sql2019].
+
+![Azure Data Studio with SQL Server 2019 extension]({{ site.baseurl }}/images/sql2019/data-studio.png "Azure Data Studio with SQL Server 2019 extension"){: .image-col-1}
 
 ### Install SQL Server 2019 on AKS
 
@@ -152,13 +154,39 @@ $ mssqlctl create cluster $CLUSTER_NAME
 
 Great, that was it! You are now ready to get started.
 
-## Examples of SQL Server 2019 Big Data Analytics
+![Kubernetes dashboard for SQL Server 2019]({{ site.baseurl }}/images/sql2019/kubernetes.png "Kubernetes dashboard for SQL Server 2019"){: .image-col-1}
+
+## Examples of SQL Server 2019 for Big Data Analytics
+
+For this section, we will use Azure Data Studio with the SQL Server 2019 extension.
 
 ### Working with HDFS
 
+```sh
+$ kubectl get service service-security-lb -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
+```
+
 ### Working with SQL
 
+Let's retrieve the SQL Server endpoint from the Kubernetes cluster.
+
+```sh
+$ kubectl get service endpoint-master-pool -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
+```
+
+You can connect to the SQL Server endpoint using standard SQL tooling, such as SQL Server Management Studio or Azure Data Studio. In Data Studio, select connection type `Microsoft SQL Server`.
+
+![External table in SQL Server 2019]({{ site.baseurl }}/images/sql2019/sql.png "External table in SQL Server 2019"){: .image-col-1}
+
 ### Working with Spark
+
+![Spark accessing SQL in SQL Server 2019]({{ site.baseurl }}/images/sql2019/spark.png "Spark accessing SQL in SQL Server 2019"){: .image-col-1}
+
+### Administration
+
+```sh
+$ kubectl get service service-proxy-lb -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
+```
 
 ## Resources
 
