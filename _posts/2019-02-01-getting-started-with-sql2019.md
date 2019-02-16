@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Getting Started with Microsoft SQL 2019 for Big Data"
+title: "Getting Started with Microsoft SQL 2019 Big Data clusters"
 date: 2019-02-01 16:00:00
 categories: hadoop
 tags: bigdata hadoop spark sql2019
@@ -166,7 +166,7 @@ Great, that was it! You are now ready to get started. The following figure shows
 
 ![Kubernetes dashboard for SQL Server 2019 BDC]({{ site.baseurl }}/images/sql2019/kubernetes.png "Kubernetes dashboard for SQL Server 2019"){: .image-col-1}
 
-## Examples of SQL Server 2019 for Big Data Analytics
+## Querying SQL Server 2019 BDC
 
 For this section, we will use Azure Data Studio with the SQL Server 2019 extension which let's us connect to both the SQL Server endpoint as well as the Knox endpoint for HDFS and Spark.
 
@@ -203,6 +203,19 @@ $ kubectl get service service-proxy-lb -o=custom-columns="IP:.status.loadBalance
 ```
 
 ## Resources
+
+* [SQL Server 2019][sql-server-2019]
+* [SQL Server 2019 Big Data cluster (BDC)][sql-server-2019-bigdata]
+* [Kubernetes][kubernetes]
+* [Hadoop Distributed Filesystem (HDFS)][apache-hdfs]
+* [Apache Spark][apache-spark]
+* [Apache Knox][apache-knox]
+* [SQL Server 2019 Early Adoption Program][sql-server-2019-early-adoption]
+* [SQL Server 2019 BDC installation guide][sql-server-2019-deploy-bigdata]
+* [SQL Server 2019 BDC installation script][sql-server-2019-deploy-bigdata-github]
+* [Kubectl installation guide][install-kubectl]
+* [Mssqlctl installation guide][install-mssqlctl]
+* [Azure Data Studio][azure-data-studio]
 
 [sql-server-2019]: https://www.microsoft.com/en-us/sql-server/sql-server-2019
 [sql-server-2019-bigdata]: https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-overview?view=sql-server-ver15
