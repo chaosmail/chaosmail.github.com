@@ -30,7 +30,7 @@ Currently, SQL Server 2019 and SQL Server 2019 Big data cluster (BDC) are still 
 In this section we will go through the prerequisites and installation process as documented in the [SQL Server 2019 installation guidelines][sql-server-2019-deploy-bigdata] for Big Data analytics. In the documentation, you will find a link to a [Python script][sql-server-2019-deploy-bigdata-github] that allows you to spin up SQL 2019 on AKS.
 
 > If you want to install SQL Server 2019 BDC on your on-premise Kubernetes cluster, you can follow the steps in [Christopher Adkin's Blog](https://chrisadkin.io/2018/12/18/building-a-kubernetes-cluster-for-sql-server-2019-big-data-clusters-part-1-hyper-v-virtual-machine-creation/
-). 
+). You can find an official deployment guide for BDC on [minikube in the Microsoft docs](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-on-minikube?view=sql-server-ver15).
 
 ### Prerequisites: Kubernetes and MSSQL clients
 
@@ -78,6 +78,8 @@ Before you continue, make sure that both `kubectl` and `mssqlctl` commands are a
 ### Prerequisites: Azure Data Studio
 
 [Azure Data Studio][azure-data-studio] is a cross-platform management tool for Microsoft databases. It's like SQL Server Management Studio on top of the popular VS Code editor engine, a rich T-SQL editor with IntelliSense and Plugin support. Currently, it's the easiest way to connect to the different SQL Server 2019 endpoints (SQL, HDFS, and Spark). To do so, you need to [install Data Studio][azure-data-studio-install] and the [SQL Server 2019 extension][azure-data-studio-install-sql2019].
+
+Azure Data Studio also supports Jupyter-style notebooks for T-SQL and Spark. The following screenshot shows Data Studio with the notebooks extension.
 
 ![Azure Data Studio with SQL Server 2019 extension]({{ site.baseurl }}/images/sql2019/data-studio.png "Azure Data Studio with SQL Server 2019 extension"){: .image-col-1}
 
@@ -176,7 +178,7 @@ For this section, we will use Azure Data Studio with the SQL Server 2019 extensi
 $ kubectl get service service-security-lb -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
 ```
 
-https://docs.microsoft.com/en-us/sql/big-data-cluster/quickstart-big-data-cluster-deploy?view=sql-server-ver15#hdfs
+You can configure external tables in the SQL engine with data stored in HDFS with the [external table wizard](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/data-virtualization-csv?toc=%2fsql%2fbig-data-cluster%2ftoc.json&view=sql-server-ver15).
 
 ### Working with SQL
 
@@ -188,19 +190,47 @@ $ kubectl get service endpoint-master-pool -o=custom-columns="IP:.status.loadBal
 
 It is a just a normal SQL Server master instance like in SQL Server 2017. Hence, you can connect to the SQL Server endpoint using standard SQL tooling, such as SQL Server Management Studio or Azure Data Studio. In Data Studio, select connection type `Microsoft SQL Server`.
 
+You can verify yourself that this is a standard SQL Server instance. The following screenshot shows a query over an external table storing data in HDFS on the same cluster.
+
 ![External table in SQL Server 2019]({{ site.baseurl }}/images/sql2019/sql.png "External table in SQL Server 2019"){: .image-col-1}
 
-https://docs.microsoft.com/en-us/sql/big-data-cluster/quickstart-big-data-cluster-deploy?view=sql-server-ver15#master
+Using Polybase, you can as well setup external tables to many other relational data sources, such as Oracle and SAP Hana. Using the [external table wizard](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/data-virtualization?toc=%2fsql%2fbig-data-cluster%2ftoc.json&view=sql-server-ver15) in Data Studio this connection is easy to setup.
+
+> You can find many more demos for SQL Server 2019 on [Bob Ward's Github repository](https://github.com/Microsoft/bobsql).
 
 ### Working with Spark
 
+In the current version, the credentials from Spark are not yet passed to the SQL engine automatically. Hence we have to supply a username and password along with the local database host to build the JDBC connection string. Here is a simple PySpark script to connect to the SQL Server database from within Spark.
+
+```python
+host = ""
+database = "demos"
+user = "sa"
+password = ""
+table = "dbo.NYCTaxiTrips"
+jdbc_url = "jdbc:sqlserver://%s;database=%s;user=%s;password=%s" % (host, database, user, password)
+
+df = spark.read.format("jdbc") \
+       .option("url", jdbc_url) \
+       .option("dbtable", table) \
+       .load()
+
+df.show()
+```
+
+The following screenshot shows the above query executed on my SQL Server 2019 BDC instance on the NYC Taxi Trips dataset.
+
 ![Spark accessing SQL in SQL Server 2019]({{ site.baseurl }}/images/sql2019/spark.png "Spark accessing SQL in SQL Server 2019"){: .image-col-1}
 
-### Administration
+If you need to [install additional Python packages](https://jakevdp.github.io/blog/2017/12/05/installing-python-packages-from-jupyter/) on the cluster nodes or [configure the Spark environment](https://becominghuman.ai/setting-up-a-scalable-data-exploration-environment-with-spark-and-jupyter-lab-22dbe7046269), you can use the Jupyter magic commands.
 
-```sh
-$ kubectl get service service-proxy-lb -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
-```
+I am sure you can see why this is really cool, right? You can easily run your Spark ETL, pre-processing and Machine Learning pipelines on data both stored in SQL and HDFS or any external sources.
+
+> You can find many more Big Data samples on [Buck Woody's Github repository](https://github.com/Microsoft/sqlworkshops/tree/master/sqlserver2019bigdataclusters).
+
+## Summary
+
+
 
 ## Resources
 
@@ -216,6 +246,7 @@ $ kubectl get service service-proxy-lb -o=custom-columns="IP:.status.loadBalance
 * [Kubectl installation guide][install-kubectl]
 * [Mssqlctl installation guide][install-mssqlctl]
 * [Azure Data Studio][azure-data-studio]
+* [SQL Workshops][sql-workshops]
 
 [sql-server-2019]: https://www.microsoft.com/en-us/sql-server/sql-server-2019
 [sql-server-2019-bigdata]: https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-overview?view=sql-server-ver15
@@ -232,3 +263,4 @@ $ kubectl get service service-proxy-lb -o=custom-columns="IP:.status.loadBalance
 [azure-data-studio]: https://docs.microsoft.com/en-us/sql/azure-data-studio/what-is?view=sqlallproducts-allversions
 [azure-data-studio-install]: https://docs.microsoft.com/en-us/sql/azure-data-studio/download?view=sqlallproducts-allversions
 [azure-data-studio-install-sql2019]: https://docs.microsoft.com/en-us/sql/azure-data-studio/sql-server-2019-extension?view=sqlallproducts-allversions
+[sql-workshops]: https://microsoft.github.io/sqlworkshops/
