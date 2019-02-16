@@ -7,24 +7,34 @@ tags: bigdata hadoop spark sql2019
 comments: true
 ---
 
-Microsoft latest [SQL Server][sql-server-2019] comes in a new version, the SQL Server Big Data cluster. There are a couple of cool things about this version: (1) it runs on [Kubernetes][kubernetes], (2) it integrates [HDFS][apache-hdfs] (a distributed file storage), (3) it integrates [Spark][apache-spark] (a distributed compute engine), (4) and both services run behind an [Apache Knox][apache-knox] Gateway (HTTPS application gateway for Hadoop). Hence, SQL Server 2019 for Big Data is a scalable, performant and maintainable SQL platform, Data Warehouse, Data Lake and Data Science platform without compromise. In this blog post I want to give you a quick start tutorial into [SQL 2019 Big data analytics][sql-server-2019-bigdata] and show you how to set it up on Azure Kubernetes Services (AKS), upload some data to HDFS and access the data from SQL and Spark.
+Microsoft latest [SQL Server 2019][sql-server-2019] comes in a new version, the SQL Server Big Data cluster (BDC). There are a couple of cool things about the BDC version: (1) it runs on [Kubernetes][kubernetes], (2) it integrates a sharded SQL engine, (3) it integrates [HDFS][apache-hdfs] (a distributed file storage), (4) it integrates [Spark][apache-spark] (a distributed compute engine), (5) and both services Spark and HDFS run behind an [Apache Knox][apache-knox] Gateway (HTTPS application gateway for Hadoop). On top, using Polybase you can connect to many different external data sources such as MongoDB, Oracle, Teradata, SAP Hana, and many more. Hence, SQL Server 2019 Big Data cluster (BDC) is a scalable, performant and maintainable SQL platform, Data Warehouse, Data Lake and Data Science platform without compromise for the cloud and on-premise. In this blog post I want to give you a quick start tutorial into [SQL 2019 Big Data clusters (BDC)][sql-server-2019-bigdata] and show you how to set it up on Azure Kubernetes Services (AKS), upload some data to HDFS and access the data from SQL and Spark.
 
-## SQL Server 2019 for Big Data
-
+## SQL Server 2019 Big Data cluster (BDC)
 
 ![SQL Server 2019 for Big Data architecture]({{ site.baseurl }}/images/sql2019/SQL-Server-2019-big-data-cluster.png "SQL Server 2019 for Big Data architecture"){: .image-col-1}
 
 https://cloudblogs.microsoft.com/sqlserver/2018/09/25/introducing-microsoft-sql-server-2019-big-data-clusters/
 
+* Controller
+* Master Instance
+* Data Pool
+* Storage Pool
+* Compute Pool
+
+Another cool feature of SQL Server 2019 is that along Python and R it will also support User Defined Functions (UDFs) written in Java. Niels Berglund has many examples in his [Blog post series](http://www.nielsberglund.com/s2k19_ext_framework_java/).
+
 ## Installation
 
-Currently, SQL 2019 for Big data analytics (the HDFS and Spark integration) is still in private preview. However, you can apply for the [Early Adoption Program][sql-server-2019-early-adoption] which will grant you access to Microsoft's private registry and SQL Server 2019 images. You are also assigned a buddy (a PM on the SQL Server 2019 team) as well as provided access to a private Teams channel. Hence, if you want to try it already today, you should definitely sign up!
+Currently, SQL Server 2019 and SQL Server 2019 Big data cluster (BDC) are still in private preview. However, you can apply for the [Early Adoption Program][sql-server-2019-early-adoption] which will grant you access to Microsoft's private registry and SQL Server 2019 images. You are also assigned a buddy (a PM on the SQL Server 2019 team) as well as provided access to a private Teams channel. Hence, if you want to try it already today, you should definitely sign up!
 
 In this section we will go through the prerequisites and installation process as documented in the [SQL Server 2019 installation guidelines][sql-server-2019-deploy-bigdata] for Big Data analytics. In the documentation, you will find a link to a [Python script][sql-server-2019-deploy-bigdata-github] that allows you to spin up SQL 2019 on AKS.
 
+> If you want to install SQL Server 2019 BDC on your on-premise Kubernetes cluster, you can follow the steps in [Christopher Adkin's Blog](https://chrisadkin.io/2018/12/18/building-a-kubernetes-cluster-for-sql-server-2019-big-data-clusters-part-1-hyper-v-virtual-machine-creation/
+). 
+
 ### Prerequisites: Kubernetes and MSSQL clients
 
-To [deploy a SQL Server 2019 Big Data cluster][sql-server-2019-deploy-bigdata] on AKS, you need the following tools installed. For this tutorial, I installed all these tools on Ubuntu 18.04 LTS on [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (Windows Subsystem for Linux).
+To [deploy a SQL Server 2019 Big Data cluster (BDC)][sql-server-2019-deploy-bigdata] on Azure Kubernetes Services (AKS), you need the following tools installed. For this tutorial, I installed all these tools on Ubuntu 18.04 LTS on [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (Windows Subsystem for Linux).
 
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 * [kubectl][install-kubectl]
@@ -57,7 +67,7 @@ sudo apt-get update
 sudo apt-get install -y kubectl=1.10.9-00
 ```
 
-The `mssqlctl` tool is a handy command-line utility that allows you to create and manage SQL Server 2019 Big Data installations. You can [install it][install-mssqlctl] using pip with the following command:
+The `mssqlctl` tool is a handy command-line utility that allows you to create and manage SQL Server 2019 Big Data cluster installations. You can [install it][install-mssqlctl] using pip with the following command:
 
 ```sh
 $ pip3 install --extra-index-url https://private-repo.microsoft.com/python/ctp-2.2 mssqlctl --user
@@ -67,11 +77,11 @@ Before you continue, make sure that both `kubectl` and `mssqlctl` commands are a
 
 ### Prerequisites: Azure Data Studio
 
-[Azure Data Studio][azure-data-studio] is a cross-platform management tool for Microsoft databases. It's like SQL Server Management Studio on top of the popular VS Code editor engine, a rich TSQL editor with IntelliSense and Plugin support. Currently, it's the easiest way to connect to the different SQL Server 2019 endpoints (SQL, HDFS, and Spark). To do so, you need to [install Data Studio][azure-data-studio-install] and the [SQL Server 2019 extension][azure-data-studio-install-sql2019].
+[Azure Data Studio][azure-data-studio] is a cross-platform management tool for Microsoft databases. It's like SQL Server Management Studio on top of the popular VS Code editor engine, a rich T-SQL editor with IntelliSense and Plugin support. Currently, it's the easiest way to connect to the different SQL Server 2019 endpoints (SQL, HDFS, and Spark). To do so, you need to [install Data Studio][azure-data-studio-install] and the [SQL Server 2019 extension][azure-data-studio-install-sql2019].
 
 ![Azure Data Studio with SQL Server 2019 extension]({{ site.baseurl }}/images/sql2019/data-studio.png "Azure Data Studio with SQL Server 2019 extension"){: .image-col-1}
 
-### Install SQL Server 2019 on AKS
+### Install SQL Server 2019 BDC on AKS
 
 In this section, we will follow the steps from the [installation script][sql-server-2019-deploy-bigdata-github] in order to install SQL Server 2019 for Big Data on AKS. I will give you a bit more details and explanation about the executed steps. If you just want to install SQL Server 2019 for Big Data, you can as well just use the script.
 
@@ -144,21 +154,21 @@ Next, we can open the Kuerbenetes dashboard for the newly created AKS cluster an
 $ az aks browse --resource-group $GROUP_NAME --name $CLUSTER_NAME
 ```
 
-The Kuerbenetes dashboard should now be available via [http://localhost:8001](http://localhost:8001). I recommend you to open it and take a look to verify everything is green.
+The Kuerbenetes dashboard should now be available via [http://localhost:8001](http://localhost:8001). I recommend you to open it and take a look at your newly created cluster.
 
-Finally, we can deploy SQL Server 2019 for Big Data on the Kubernetes cluster. This is quite easy using the `mssqlctl` command-line utility.
+Finally, we can deploy SQL Server 2019 BDC on the Kubernetes cluster using the `mssqlctl` command-line utility.
 
 ```sh
 $ mssqlctl create cluster $CLUSTER_NAME
 ```
 
-Great, that was it! You are now ready to get started.
+Great, that was it! You are now ready to get started. The following figure shows the Kubernetes dashboard with an installed instance of SQL Server 2019 BDC. You can see the Storage, Data and Compute pools as well as the SQL Master instance.
 
-![Kubernetes dashboard for SQL Server 2019]({{ site.baseurl }}/images/sql2019/kubernetes.png "Kubernetes dashboard for SQL Server 2019"){: .image-col-1}
+![Kubernetes dashboard for SQL Server 2019 BDC]({{ site.baseurl }}/images/sql2019/kubernetes.png "Kubernetes dashboard for SQL Server 2019"){: .image-col-1}
 
 ## Examples of SQL Server 2019 for Big Data Analytics
 
-For this section, we will use Azure Data Studio with the SQL Server 2019 extension.
+For this section, we will use Azure Data Studio with the SQL Server 2019 extension which let's us connect to both the SQL Server endpoint as well as the Knox endpoint for HDFS and Spark.
 
 ### Working with HDFS
 
@@ -166,17 +176,21 @@ For this section, we will use Azure Data Studio with the SQL Server 2019 extensi
 $ kubectl get service service-security-lb -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
 ```
 
+https://docs.microsoft.com/en-us/sql/big-data-cluster/quickstart-big-data-cluster-deploy?view=sql-server-ver15#hdfs
+
 ### Working with SQL
 
-Let's retrieve the SQL Server endpoint from the Kubernetes cluster.
+Let's retrieve the SQL Server *Master Instance* endpoint from the Kubernetes cluster.
 
 ```sh
 $ kubectl get service endpoint-master-pool -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
 ```
 
-You can connect to the SQL Server endpoint using standard SQL tooling, such as SQL Server Management Studio or Azure Data Studio. In Data Studio, select connection type `Microsoft SQL Server`.
+It is a just a normal SQL Server master instance like in SQL Server 2017. Hence, you can connect to the SQL Server endpoint using standard SQL tooling, such as SQL Server Management Studio or Azure Data Studio. In Data Studio, select connection type `Microsoft SQL Server`.
 
 ![External table in SQL Server 2019]({{ site.baseurl }}/images/sql2019/sql.png "External table in SQL Server 2019"){: .image-col-1}
+
+https://docs.microsoft.com/en-us/sql/big-data-cluster/quickstart-big-data-cluster-deploy?view=sql-server-ver15#master
 
 ### Working with Spark
 
