@@ -7,35 +7,33 @@ tags: bigdata hadoop spark sql2019
 comments: true
 ---
 
-Microsoft latest [SQL Server 2019][sql-server-2019] comes in a new version, the SQL Server 2019 Big Data cluster (BDC). There are a couple of cool things about the BDC version: (1) it runs on [Kubernetes][kubernetes], (2) it integrates a sharded SQL engine, (3) it integrates [HDFS][apache-hdfs] (a distributed file storage), (4) it integrates [Spark][apache-spark] (a distributed compute engine), (5) and both services Spark and HDFS run behind an [Apache Knox][apache-knox] Gateway (HTTPS application gateway for Hadoop). On top, using Polybase you can connect to many different external data sources such as MongoDB, Oracle, Teradata, SAP Hana, and many more. Hence, SQL Server 2019 Big Data cluster (BDC) is a scalable, performant and maintainable SQL platform, Data Warehouse, Data Lake and Data Science platform without compromise for the cloud and on-premise. In this blog post I want to give you a quick start tutorial into [SQL 2019 Big Data clusters (BDC)][sql-server-2019-bigdata] and show you how to set it up on Azure Kubernetes Services (AKS), upload some data to HDFS and access the data from SQL and Spark.
+Microsoft latest [SQL Server 2019][sql-server-2019] (preview) comes in a new version, the SQL Server 2019 Big Data cluster (BDC). There are a couple of cool things about the BDC version: (1) it runs on [Kubernetes][kubernetes], (2) it integrates a sharded SQL engine, (3) it integrates [HDFS][apache-hdfs] (a distributed file storage), (4) it integrates [Spark][apache-spark] (a distributed compute engine), (5) and both services Spark and HDFS run behind an [Apache Knox][apache-knox] Gateway (HTTPS application gateway for Hadoop). On top, using Polybase you can connect to many different external data sources such as MongoDB, Oracle, Teradata, SAP Hana, and many more. Hence, SQL Server 2019 Big Data cluster (BDC) is a scalable, performant and maintainable SQL platform, Data Warehouse, Data Lake and Data Science platform without compromise for the cloud and on-premise. In this blog post I want to give you a quick start tutorial into [SQL 2019 Big Data clusters (BDC)][sql-server-2019-bigdata] and show you how to set it up on Azure Kubernetes Services (AKS), upload some data to HDFS and access the data from SQL and Spark.
 
 ## SQL Server 2019 Big Data cluster (BDC)
 
 [SQL Server 2019 Big Data cluster (BDC)][sql-server-2019-bigdata] is one of the most exciting pieces of technologies I have seen in a long time. Here is why.
 
-The following figure (Source: [microsoft.com/sqlserver](https://cloudblogs.microsoft.com/sqlserver/2018/09/25/introducing-microsoft-sql-server-2019-big-data-clusters/)) shows the architecture for SQL Server 2019 Big Data cluster (BDC) running on top of Kubernetes.
-
-![SQL Server 2019 for Big Data architecture]({{ site.baseurl }}/images/sql2019/SQL-Server-2019-big-data-cluster.png "SQL Server 2019 for Big Data architecture"){: .image-col-1}
+![SQL Server 2019 for Big Data architecture Source: [microsoft.com/sqlserver](https://cloudblogs.microsoft.com/sqlserver/2018/09/25/introducing-microsoft-sql-server-2019-big-data-clusters/)]({{ site.baseurl }}/images/sql2019/SQL-Server-2019-big-data-cluster.png "SQL Server 2019 for Big Data architecture"){: .image-col-1}
 
 ### Kubernetes
-SQL Server 2019 builds on a new abstraction layer called *Platform Abstraction Layer* (PAL) which let's you run SQL Server on multiple platforms and environments, such as Windows, Linux, and Containers. To take this one step further, we can run SQL Server clusters entirely within Kubernetes - either locally (e.g. on [Minikube](https://kubernetes.io/docs/setup/minikube/)), on-premise clusters or in the cloud (e.g. on Azure Kubernetes Services). To facilitate operation, there is a new `mssqlctl` command to scaffold and configure SQL Server 2019 clusters in Kubernetes.
+SQL Server 2019 builds on a new abstraction layer called *Platform Abstraction Layer* (PAL) which let's you run SQL Server on multiple platforms and environments, such as Windows, Linux, and Containers. To take this one step further, we can run SQL Server clusters entirely within Kubernetes - either locally (e.g. on [Minikube](https://kubernetes.io/docs/setup/minikube/)), on on-premise clusters or in the cloud (e.g. on Azure Kubernetes Services). All data is persisted using [*Persistent Volumes*](https://docs.microsoft.com/en-us/sql/big-data-cluster/concept-data-persistence?view=sqlallproducts-allversions). To facilitate operations, there is a new `mssqlctl` command to scaffold, configure, and scale SQL Server 2019 clusters in Kubernetes.
 
 ### SQL Master Instance
-If you deploy SQL Server 2019 as a cluster in [Kubernetes][kubernetes], it comes with a SQL *Master Instance* and multiple SQL engine compute and storage shards. The great thing about the Master Instance is that it is just a normal SQL instance - you can use all existing tooling, code, etc. and interact with SQL Server cluster as if it was a single DB instance. If you stream data to the cluster, you can stream the data directly to the SQL shards without going through the Master Instance.
+If you deploy SQL Server 2019 as a cluster in [Kubernetes][kubernetes], it comes with a SQL *Master Instance* and multiple SQL engine compute and storage shards. The great thing about the Master Instance is that it is just a normal SQL instance - you can use all existing tooling, code, etc. and interact with SQL Server cluster as if it was a single DB instance. If you stream data to the cluster, you can stream the data directly to the SQL shards without going through the Master Instance. This gives you optimal throughput performance.
 
 ### Polybase
-You might know *Polybase* from SQL Server 2016 as a service that let's you connect to flat HDFS data sources. With SQL 2019, you can now as well connect to relational data sources (e.g. Oracle, Teradata, SAP Hana, etc.) or NoSQL data sources (e.g. Mongo DB, Cosmos DB, etc.) as well using Polybase and [external tables](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/data-virtualization?view=sqlallproducts-allversions) - both with [predicate pushdown filters](https://blogs.msdn.microsoft.com/sql_server_team/predicate-pushdown-and-why-should-i-care/). It's a fantastic feature turning your SQL Server 2019 cluster into your central data hub.
+You might know *Polybase* from SQL Server 2016 as a service that let's you connect to flat HDFS data sources. With SQL Server 2019, you can now as well connect to relational data sources (e.g. Oracle, Teradata, SAP Hana, etc.) or NoSQL data sources (e.g. Mongo DB, Cosmos DB, etc.) as well using Polybase and [external tables](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/data-virtualization?view=sqlallproducts-allversions) - both with [predicate pushdown filters](https://blogs.msdn.microsoft.com/sql_server_team/predicate-pushdown-and-why-should-i-care/). It's a fantastic feature turning your SQL Server 2019 cluster into your central data hub.
 
 ### HDFS
-Now comes the fun part. When you deploy a SQL Server 2019 BDC, you also deploy an [*Hadoop Distributed Filesystem* (HDFS)][apache-hdfs] within Kubernetes. With [tiered storage feature in HDFS](https://www.microsoft.com/en-us/research/project/tiered-storage/) you can as well mount existing HDFS clusters into the integrated SQL Server 2019 HDFS. Using the [integrated Polybase scale-out groups](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/configure-scale-out-groups-windows?view=sqlallproducts-allversions) you can efficiently access this data from SQL with [external tables](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/data-virtualization-csv?view=sqlallproducts-allversions). If you install SQL Server 2019 as a BDC, all configuration of those services is done automatically, even pass-through authentication. This features allows your SQL Server 2019 cluster to become the central data storage for both relational structured and massive volumes of flat unstructured data.
+Now comes the fun part. When you deploy a SQL Server 2019 BDC, you also deploy an [*Hadoop Distributed Filesystem* (HDFS)][apache-hdfs] within Kubernetes. With the [tiered storage feature in HDFS](https://www.microsoft.com/en-us/research/project/tiered-storage/) you can as well mount existing HDFS clusters into the integrated SQL Server 2019 HDFS. Using the [integrated Polybase scale-out groups](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/configure-scale-out-groups-windows?view=sqlallproducts-allversions) you can efficiently access this distributed data from SQL with [external tables](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/data-virtualization-csv?view=sqlallproducts-allversions). If you install SQL Server 2019 as a BDC, all configuration of those services is done automatically, even pass-through authentication. This features allows your SQL Server 2019 cluster to become the central data storage for both relational structured and massive volumes of flat unstructured data.
 
 ### Spark
-And it's getting better. The SQL Server 2019 BDC also includes a [*Spark*][apache-spark] run-time co-located with the HDFS data pools. For me coming from a Big Data background, this is huge! This means, you can take advantage of all Spark features (SparkSQL, Dataframes, MLlib for machine learning, GraphX for graph processing, Structured Streaming for stream processing, and much more). Now, your SQL Server 2019 cluster can as well be used by your data scientists and data engineers as a central Big Data hub. Thanks to integration of [Apache Livy](https://livy.incubator.apache.org/) (a Spark Rest Gateway) you can utilize this functionality with your existing tooling, such as Jupyter or Zeppelin notebooks.
+And it's getting better. The SQL Server 2019 BDC also includes a [*Spark*][apache-spark] run-time co-located with the HDFS data pools. For me - coming from a Big Data background - this is huge! This means, you can take advantage of all Spark features (SparkSQL, Dataframes, MLlib for machine learning, GraphX for graph processing, Structured Streaming for stream processing, and much more) directly within your SQL cluster. Now, your SQL 2019 cluster can as well be used by your data scientists and data engineers as a central Big Data hub. Thanks to integration of [Apache Livy](https://livy.incubator.apache.org/) (a Spark Rest Gateway) you can utilize this functionality with your existing tooling, such as Jupyter or Zeppelin notebooks out-of-the-box.
 
 ### Much More ... (Knox, Grafana, SSIS, Report Server, etc.)
-Once we are running in Kubernetes, we can as well add many more services to the cluster and manage, operate, and scale them together. The Spark and HDFS functionality is provided behind an [Apache Knox Gateway][apache-knox](HTTPS application gateway for Hadoop) and can be integrated into many other existing services (e.g. processes writing to HDFS, etc.). SQL Server 2019 BDC ships as well with an integrated Grafana dashboard for monitoring all relevant service metrics.
+Once we are running in Kubernetes, you can as well add many more services to the cluster and manage, operate, and scale them together. The Spark and HDFS functionality is configured with an [Apache Knox Gateway][apache-knox] (HTTPS application gateway for Hadoop) and can be integrated into many other existing services (e.g. processes writing to HDFS, etc.). SQL Server 2019 BDC ships as well with an integrated with a [Cluster Configuration portal](https://docs.microsoft.com/en-us/sql/big-data-cluster/cluster-admin-portal?view=sqlallproducts-allversions) and a Grafana dashboard for monitoring all relevant service metrics.
 
-Deploying other co-located to the same Kubernetes cluster becomes quite easy. Services such as SSIS, SSAS or Report Server can simply be deployed and scaled to the same SQL Server 2019 cluster as additional Kubernetes pods.
+Deploying other co-located services to the same Kubernetes cluster becomes quite easy. Services such as Integration Services, Analysis Services or Report Server can simply be deployed and scaled to the same SQL Server 2019 cluster as additional Kubernetes pods.
 
 Another cool feature of SQL Server 2019 worth mentioning is that along Python and R it will also support User Defined Functions (UDFs) written in Java. Niels Berglund has many examples in his [Blog post series](http://www.nielsberglund.com/s2k19_ext_framework_java/).
 
@@ -43,10 +41,10 @@ Another cool feature of SQL Server 2019 worth mentioning is that along Python an
 
 Currently, SQL Server 2019 and SQL Server 2019 Big data cluster (BDC) are still in private preview. However, you can apply for the [Early Adoption Program][sql-server-2019-early-adoption] which will grant you access to Microsoft's private registry and SQL Server 2019 images. You are also assigned a buddy (a PM on the SQL Server 2019 team) as well as granted access to a private Teams channel. Hence, if you want to try it already today, you should definitely sign up!
 
-In this section we will go through the prerequisites and installation process as documented in the [SQL Server 2019 installation guidelines][sql-server-2019-deploy-bigdata] for Big Data analytics. In the documentation, you will find a link to a [Python script][sql-server-2019-deploy-bigdata-github] that allows you to spin up SQL 2019 on AKS.
+In this section we will go through the prerequisites and installation process as documented in the [SQL Server 2019 installation guidelines][sql-server-2019-deploy-bigdata] for Big Data analytics. In the documentation, you will find a link to a [Python script][sql-server-2019-deploy-bigdata-github] that allows you to spin up SQL 2019 on Azure Kubernetes Services (AKS).
 
 > If you want to install SQL Server 2019 BDC on your on-premise Kubernetes cluster, you can follow the steps in [Christopher Adkin's Blog](https://chrisadkin.io/2018/12/18/building-a-kubernetes-cluster-for-sql-server-2019-big-data-clusters-part-1-hyper-v-virtual-machine-creation/
-). You can find an official deployment guide for BDC on [minikube in the Microsoft docs](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-on-minikube?view=sql-server-ver15).
+). You can find an official deployment guide for BDC on [Minikube in the Microsoft docs](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-on-minikube?view=sql-server-ver15).
 
 ### Prerequisites: Kubernetes and MSSQL clients
 
@@ -194,11 +192,23 @@ For this section, we will use Azure Data Studio with the SQL Server 2019 extensi
 
 ### Working with HDFS
 
+First, we will put some data into the Big Data cluster. Let's retrieve the Knox URL for HDFS.
+
 ```sh
 $ kubectl get service service-security-lb -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
 ```
 
-You can configure external tables in the SQL engine with data stored in HDFS with the [external table wizard](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/data-virtualization-csv?toc=%2fsql%2fbig-data-cluster%2ftoc.json&view=sql-server-ver15).
+Using this URL, we can build the WebHDFS URL and use any HDFS client to connect to the file system.
+
+```
+https://<service-security-lb service external IP address>:30433/gateway/default/webhdfs/v1/
+```
+
+You can follow the [guidelines in the Microsoft docs](https://docs.microsoft.com/en-us/sql/big-data-cluster/data-ingestion-curl?view=sqlallproducts-allversions) using `curl` or simply use the integrated HDFS explorer in Data Studio. To do so, you must [create a new connection in Data Studio](https://docs.microsoft.com/en-us/sql/big-data-cluster/connect-to-big-data-cluster?view=sqlallproducts-allversions) and select `SQL Server Big Data Cluster`.
+
+![HDFS in SQL Server 2019 (Source: [docs.microsoft.com](https://docs.microsoft.com/en-us/sql/big-data-cluster/connect-to-big-data-cluster?view=sqlallproducts-allversions))]({{ site.baseurl }}/images/sql2019/connect-data-services-node.png "HDFS in SQL Server 2019"){: .image-col-1}
+
+In order to query the HDFS data from SQL, you can configure external tables with the [external table wizard](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/data-virtualization-csv?toc=%2fsql%2fbig-data-cluster%2ftoc.json&view=sql-server-ver15).
 
 ### Working with SQL
 
@@ -219,6 +229,8 @@ Using Polybase, you can as well setup external tables to many other relational d
 > You can find many more demos for SQL Server 2019 on [Bob Ward's Github repository](https://github.com/Microsoft/bobsql).
 
 ### Working with Spark
+
+To work with Spark in SQL Server 2019 BDC, we can leverage the notebook capabilities of Data Studio. Once we connected to the Big Data cluster, we will see options to create Spark notebooks for this instance.
 
 In the current version, the credentials from Spark are not yet passed to the SQL engine automatically. Hence we have to supply a username and password along with the local database host to build the JDBC connection string. Here is a simple PySpark script to connect to the SQL Server database from within Spark.
 
