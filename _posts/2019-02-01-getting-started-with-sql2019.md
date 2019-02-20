@@ -39,7 +39,7 @@ Another cool feature of SQL Server 2019 worth mentioning is that along Python an
 
 ## Installation
 
-Currently, SQL Server 2019 and SQL Server 2019 Big data cluster (BDC) are still in private preview. However, you can apply for the [Early Adoption Program][sql-server-2019-early-adoption] which will grant you access to Microsoft's private registry and SQL Server 2019 images. You are also assigned a buddy (a PM on the SQL Server 2019 team) as well as granted access to a private Teams channel. Hence, if you want to try it already today, you should definitely sign up!
+Currently, SQL Server 2019 and SQL Server 2019 Big data cluster (BDC) are still in private preview. Hence, you need to apply for the [Early Adoption Program][sql-server-2019-early-adoption] which will grant you access to Microsoft's private registry and SQL Server 2019 images. You are also assigned a buddy (a PM on the SQL Server 2019 team) as well as granted access to a private Teams channel. Hence, if you want to try it already today, you should definitely sign up!
 
 In this section we will go through the prerequisites and installation process as documented in the [SQL Server 2019 installation guidelines][sql-server-2019-deploy-bigdata] for Big Data analytics. In the documentation, you will find a link to a [Python script][sql-server-2019-deploy-bigdata-github] that allows you to spin up SQL 2019 on Azure Kubernetes Services (AKS).
 
@@ -53,6 +53,7 @@ To [deploy a SQL Server 2019 Big Data cluster (BDC)][sql-server-2019-deploy-bigd
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 * [kubectl][install-kubectl]
 * [mssqlctl][install-mssqlctl]
+* [SQL Server 2019 Early Adoption Program][sql-server-2019-early-adoption]
 
 To avoid any problems with Kubernetes APIs, it's best to install the same `kubectl` version as the Kubernetes version on AKS. In the SQL Server 2019 docs, the version `1.10.9` is recommended. To get all versions of supported Kubernetes versions, run the following snippet.
 
