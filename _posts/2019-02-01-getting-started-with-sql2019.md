@@ -126,11 +126,14 @@ KUBERNETES_VERSION="1.10.9"
 # This is both Kubernetes cluster name and SQL Big Data cluster name
 # Provide name of AKS cluster and SQL big data cluster
 CLUSTER_NAME="sqlbigdata"
+# Provide username to be used for Controller user
+CONTROLLER_USERNAME="admin"
 # This password will be use for Controller user, Knox user and SQL Server Master SA accounts
 # Provide password to be used for Controller user, Knox user and SQL Server Master SA accounts
 PASSWORD="MySQLBigData2019"
-# Provide username to be used for Controller user
-CONTROLLER_USERNAME="admin"
+CONTROLLER_PASSWORD="$PASSWORD"
+MSSQL_SA_PASSWORD="$PASSWORD"
+KNOX_PASSWORD="$PASSWORD"
 
 # Private Microsoft registry
 DOCKER_REGISTRY="private-repo.microsoft.com"
