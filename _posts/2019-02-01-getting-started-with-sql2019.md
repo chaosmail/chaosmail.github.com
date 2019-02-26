@@ -157,6 +157,7 @@ If you run this script for the first time, you can skip the following step. Howe
 
 ```sh
 $ kubectl config unset "clusters.$CLUSTER_NAME"
+$ kubectl config unset "contexts.$CLUSTER_NAME-admin"
 $ kubectl config unset "users.clusterAdmin_${GROUP_NAME}_${CLUSTER_NAME}"
 ```
 In the next step, we retrieve the credentials for the cluster. This will register the credentials in the `kubectl` config.
