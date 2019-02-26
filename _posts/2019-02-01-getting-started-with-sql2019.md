@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Getting Started with Microsoft SQL 2019 Big Data clusters"
-date: 2019-02-01 16:00:00
+date: 2019-02-26 14:30:00
 categories: hadoop
 tags: bigdata hadoop spark sql2019
 comments: true
