@@ -115,6 +115,8 @@ In this section, we will follow the steps from the [installation script][sql-ser
 
 First, we start setting all required parameters for the installation process. For the docker username and password, please use the credentials provided in the Early Adoption program. These will give you access to Microsoft's internal registry with the latest SQL Server 2019 images.
 
+Please note that during the Early Adoption phase you will have to enter your docker credentials for the private Microsoft registry. You will receive these credentials after registering for the [SQL Server Early Adoption][sql-server-2019-early-adoption] program.
+
 ```sh
 # Provide your Azure subscription ID
 SUBSCRIPTION_ID="***"
@@ -147,10 +149,15 @@ DOCKER_REGISTRY="private-repo.microsoft.com"
 DOCKER_REPOSITORY="mssql-private-preview"
 DOCKER_IMAGE_TAG="latest"
 
-# Provide your Docker username
+# Provide your Docker username and email
 DOCKER_USERNAME="***"
+DOCKER_EMAIL="***"
 # Provide your Docker password
 DOCKER_PASSWORD="***"
+
+DOCKER_PRIVATE_REGISTRY="1"
+CLUSTER_PLATFORM="aks"
+ACCEPT_EULA="Y"
 ```
 
 Now, we can go ahead and create the AKS cluster.
