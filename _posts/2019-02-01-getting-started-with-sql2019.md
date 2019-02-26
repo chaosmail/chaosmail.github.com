@@ -163,8 +163,9 @@ ACCEPT_EULA="Y"
 Now, we can go ahead and create the AKS cluster.
 
 ```sh
-$ az aks create --name $CLUSTER_NAME --resource-group $GROUP_NAME --generate-ssh-keys \
-    --node-vm-size $VM_SIZE --node-count $AKS_NODE_COUNT --kubernetes-version $KUBERNETES_VERSION
+$ az aks create --name $CLUSTER_NAME --resource-group $GROUP_NAME \
+    --generate-ssh-keys --node-vm-size $VM_SIZE \
+    --node-count $AKS_NODE_COUNT --kubernetes-version $KUBERNETES_VERSION
 ```
 
 If you run this script for the first time, you can skip the following step. However, if you create multiple AKS clusters with the same name, you first need to clean the credentials.
@@ -281,7 +282,11 @@ I am sure you can see why this is really cool, right? You can easily run your Sp
 
 ## Summary
 
+SQL Server 2019 Big Data cluster (BDC) is combining SQL Server, HDFS and Spark into one single cluster running on Kubernetes, either locally, on-premise or on the cloud. Using Polybase, one can connect multiple services - such as relational databases and NoSQL databases, or files in HDFS - as external tables. This allows you to have a single cluster for all your SQL and Spark workloads as well as for storing massive datasets.
 
+To setup SQL Server 2019 BDC, one needs to sign up for the SQL Server Early Adoption program and install `kubectl` and `mssqlctl` on the local machine. The cluster can be created using the Python [installation script][sql-server-2019-deploy-bigdata-github]. Make sure to clean your credentials and setup rolebinding to access your Kubernetes cluster in the cloud.
+
+Once the cluster is created, one can use Azure Data Studio to manage both SQL Server and HDFS. On top, Data Studio provides Jupyter-like notebooks to run Spark on the SQL Server 2019 cluster.
 
 ## Resources
 
