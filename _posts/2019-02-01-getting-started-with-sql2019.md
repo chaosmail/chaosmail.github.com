@@ -62,31 +62,14 @@ To [deploy a SQL Server 2019 Big Data cluster (BDC)][sql-server-2019-deploy-bigd
 * [mssqlctl][install-mssqlctl]
 * [SQL Server 2019 Early Adoption Program][sql-server-2019-early-adoption]
 
-To avoid any problems with Kubernetes APIs, it's best to install the same `kubectl` version as the Kubernetes version on AKS. In the SQL Server 2019 docs, the version `1.12.6` is recommended. To get all versions of supported Kubernetes versions, run the following snippet.
-
-```sh
-$ az aks get-versions --location westeurope --output table
-KubernetesVersion    Upgrades
--------------------  -----------------------
-1.12.4               None available
-1.11.6               1.12.4
-1.11.5               1.11.6, 1.12.4
-1.10.12              1.11.5, 1.11.6
-1.10.9               1.10.12, 1.11.5, 1.11.6
-1.9.11               1.10.9, 1.10.12
-1.9.10               1.9.11, 1.10.9, 1.10.12
-1.8.15               1.9.10, 1.9.11
-1.8.14               1.8.15, 1.9.10, 1.9.11
-```
-
-Hence, in this case we also [install][install-kubectl] the Kubernetes `1.10.9` client.
+To avoid any problems with Kubernetes APIs, it's best to install the same `kubectl` version as the Kubernetes version on AKS. In the SQL Server 2019 docs, the version `1.12.6` is recommended. Hence, in this case we also [install][install-kubectl] the Kubernetes `1.12.6` client.
 
 ```sh
 sudo apt-get update && sudo apt-get install -y apt-transport-https
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
-sudo apt-get install -y kubectl=1.10.9-00
+sudo apt-get install -y kubectl=1.12.6-00
 ```
 
 The `mssqlctl` tool is a handy command-line utility that allows you to create and manage SQL Server 2019 Big Data cluster installations. You can [install it][install-mssqlctl] using pip with the following command:
@@ -183,7 +166,7 @@ $ az aks create --subscription $SUBSCRIPTION_ID --location $AZURE_REGION \
 Please note, if you have problems with the aks command creating the Service Principal in your Azure Active Directory (like for Microsoft employees), you can as well create the principal manually beforehand:
 
 ```sh
-$ az ad sp create-for-rbac --skip-assignment
+$ az ad sp create-for-rbac --name $CLUSTER_NAME --skip-assignment
 {
   "appId": "***",
   "displayName": "***",
@@ -193,14 +176,14 @@ $ az ad sp create-for-rbac --skip-assignment
 }
 
 # assign appId and password values
-$ SP_APP_ID = "282eca85-fafc-498c-86b8-f2bfa0d6bbcf"
-$ SP_PASSWORD = "1ccb10d5-471a-4b9f-b70a-c9f86a654857"
+$ SP_APP_ID = "<app_id>"
+$ SP_PASSWORD = "<password>"
 
 $ az aks create --subscription $SUBSCRIPTION_ID --location $AZURE_REGION \
     --name $CLUSTER_NAME --resource-group $GROUP_NAME \
     --generate-ssh-keys --node-vm-size $VM_SIZE \
     --node-count $AKS_NODE_COUNT --kubernetes-version $KUBERNETES_VERSION \
-    --service-principal SP_APP_ID --client-secret SP_PASSWORD
+    --service-principal $SP_APP_ID --client-secret $SP_PASSWORD
 ```
 
 In the next step, we retrieve the credentials for the cluster. This will register the credentials in the `kubectl` config.
@@ -256,7 +239,7 @@ You can follow the [guidelines in the Microsoft docs](https://docs.microsoft.com
 
 You can as well use the integrated HDFS explorer in Data Studio. To do so, you must [create a new connection in Data Studio](https://docs.microsoft.com/en-us/sql/big-data-mincluster/connect-to-big-data-cluster?view=sqlallproducts-allversions) and select `SQL Server Big Data Cluster`. I recommend to use the user `root` in order to have read/write access in all directories. The configuration should look similar to the following picture.
 
-![Configure HDFS in Data Studio]({{ site.baseurl }}/images/sql2019/config-spark.png "Configure HDFS in Data Studio"){: .image-col-3}
+![Configure HDFS in Data Studio]({{ site.baseurl }}/images/sql2019/config-spark.png "Configure HDFS in Data Studio"){: .image-col-1}
 
 Once added, you should see the server and the HDFS directories in Data Studio.
 
@@ -341,6 +324,10 @@ Once the cluster is created, one can use Azure Data Studio to manage both SQL Se
 * [SQL Workshops][sql-workshops]
 
 > Thanks to [Kaijisse Waaijer](https://www.linkedin.com/in/kaijisse-w-85304ba0/).
+
+## Updates
+
+* April 01, 2019: Update article to [CTP 2.4](https://cloudblogs.microsoft.com/sqlserver/2019/03/27/sql-server-2019-community-technology-preview-2-4-is-now-available/)
 
 [sql-server-2019]: https://www.microsoft.com/en-us/sql-server/sql-server-2019
 [sql-server-2019-bigdata]: https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-overview?view=sql-server-ver15
