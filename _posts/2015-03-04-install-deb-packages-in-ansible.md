@@ -35,7 +35,7 @@ Once we know that a package is not yet installed, we want to download and instal
   get_url: 
     url="{{ my_package_url }}"
     dest="/home/{{ ansible_env.USER }}/Downloads/{{ my_package_name }}.deb"
-  when: vagrant_check_deb.rc == 1
+  when: my_package_check_deb.rc == 1
 {% endraw %}
 {% endhighlight %}
 
@@ -46,7 +46,7 @@ Finally, we install the package - again just if the package was not previously i
 - name: Install my_package
   apt: deb="/home/{{ ansible_env.USER }}/Downloads/{{ my_package_name }}.deb"
   sudo: true
-  when: vagrant_check_deb.rc == 1
+  when: my_package_check_deb.rc == 1
 {% endraw %}
 {% endhighlight %}
 
