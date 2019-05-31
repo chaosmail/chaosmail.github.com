@@ -249,7 +249,7 @@ In order to query the HDFS data from SQL, you can configure external tables with
 
 ### Working with SQL
 
-To work with SQL in SQL Server 2019 BDC, we can simply connect to the SQL Server *Master Instance*. This instance is a standard SQL Server engine running behind a load balancer on Kubernetes. You can use als your familiar tools  such as SQL Server Management Studio to connect and interact with the SQL Server instance.
+To work with SQL in SQL Server 2019 BDC, we can simply connect to the SQL Server *Master Instance*. This instance is a standard SQL Server engine running behind a load balancer on Kubernetes. You can use als your familiar tools such as SQL Server Management Studio to connect and interact with the SQL Server instance.
 
 To connect to the SQL Server *Master Instance* from outside the cluster, we need to provide the **external** IP address of the master instance. You can find the local IP address of the SQL Server master instance service in the Kubernetes Dashboard, under the Big Data cluster namespace under services under the name `endpoint-master-pool` as property Cluster IP. Alternatively, you can as well print the external IP address using the following command:
 
