@@ -1,9 +1,9 @@
 # Site settings
 title: Chaosmail Blog
 email: office(at)chaosmail.at
-description: "MSc Student in Computer Science at Vienna University of Technology"
+description: "Big Data and Artificial Intelligence Expert at Microsoft, Tech Author and Speaker"
 baseurl: ""
-url: "http://chaosmail.github.io/"
+url: "https://chaosmail.github.io/"
 twitter_username: ChrisiKrnr
 github_username:  chaosmail
 paginate: 10

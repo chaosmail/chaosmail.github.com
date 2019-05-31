@@ -4,7 +4,12 @@ title: Talks
 permalink: /talks/
 ---
 
-Here is a list of my previous talks during the past years.
+Here is a list of my upcoming and previous talks.
+
+### 2019-06-29 SQL Saturday, Cork
+
+Training a large-scale recommendation engine on SQL Server 2019 BDC
+([Event](https://www.sqlsaturday.com/862/Sessions/Details.aspx?sid=91287))
 
 ### 2017-10-27 Jazoon Conference, Zurich
 
