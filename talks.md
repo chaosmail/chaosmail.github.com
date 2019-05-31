@@ -11,6 +11,10 @@ Here is a list of my upcoming and previous talks.
 Training a large-scale recommendation engine on SQL Server 2019 BDC
 ([Event](https://www.sqlsaturday.com/862/Sessions/Details.aspx?sid=91287))
 
+### 2019-05-16 Data Analytics Day, Microsoft, Dublin
+
+Process Data on Distributed Systems ([Slides](https://www.slideshare.net/secret/ApVvQSGXWyPMGf))
+
 ### 2017-10-27 Jazoon Conference, Zurich
 
 Run Deep Learning Models in the Browser with JavaScript and ConvNetJS
