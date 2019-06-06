@@ -57,7 +57,7 @@ In this section we will go through the prerequisites and installation process as
 
 To [deploy a SQL Server 2019 Big Data cluster (BDC)][sql-server-2019-deploy-bigdata] on Azure Kubernetes Services (AKS), you need the following tools installed. For this tutorial, I installed all these tools on Ubuntu 18.04 LTS on [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (Windows Subsystem for Linux).
 
-* [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+* [Azure CLI (install latest)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 * [kubectl][install-kubectl]
 * [mssqlctl][install-mssqlctl]
 * [SQL Server 2019 Early Adoption Program][sql-server-2019-early-adoption]
@@ -112,8 +112,8 @@ AZURE_REGION="westeurope"
 VM_SIZE="Standard_L4s"
 # Provide number of worker nodes for AKS cluster
 AKS_NODE_COUNT="3"
-# Provide Kubernetes version
-KUBERNETES_VERSION="1.12.6"
+# Provide supported Kubernetes version
+KUBERNETES_VERSION="1.12.7"
 
 # This is both Kubernetes cluster name and SQL Big Data cluster name
 # Provide name of AKS cluster and SQL big data cluster
@@ -161,6 +161,12 @@ $ az aks create --subscription $SUBSCRIPTION_ID --location $AZURE_REGION \
     --name $CLUSTER_NAME --resource-group $GROUP_NAME \
     --generate-ssh-keys --node-vm-size $VM_SIZE \
     --node-count $AKS_NODE_COUNT --kubernetes-version $KUBERNETES_VERSION
+```
+
+If your code fails at this point, the selected Kubernetes version might not be supported in your region. You can check which versions are supported using the following command.
+
+```sh
+$ az aks get-versions --location $AZURE_REGION --output table
 ```
 
 Please note, if you have problems with the aks command creating the Service Principal in your Azure Active Directory (like for Microsoft employees), you can as well create the principal manually beforehand:
@@ -249,15 +255,19 @@ In order to query the HDFS data from SQL, you can configure external tables with
 
 ### Working with SQL
 
-Let's retrieve the SQL Server *Master Instance* endpoint from the Kubernetes cluster.
+To work with SQL in SQL Server 2019 BDC, we can simply connect to the SQL Server *Master Instance*. This instance is a standard SQL Server engine running behind a load balancer on Kubernetes. You can use als your familiar tools such as SQL Server Management Studio to connect and interact with the SQL Server instance.
+
+To connect to the SQL Server *Master Instance* from outside the cluster, we need to provide the **external** IP address of the master instance. You can find the local IP address of the SQL Server master instance service in the Kubernetes Dashboard, under the Big Data cluster namespace under services under the name `endpoint-master-pool` as property Cluster IP. Alternatively, you can as well print the external IP address using the following command:
 
 ```sh
 $ kubectl get service endpoint-master-pool -o=custom-columns="IP:.status.loadBalancer.ingress[0].ip,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
 ```
 
-It is a just a normal SQL Server master instance like in SQL Server 2017. Hence, you can connect to the SQL Server endpoint using standard SQL tooling, such as SQL Server Management Studio or Azure Data Studio. In Data Studio, select connection type `Microsoft SQL Server`.
+As I said, it is just a normal SQL Server engine like in SQL Server 2016/2017. Hence, you can connect to the SQL Server endpoint using standard SQL tooling such as SQL Server Management Studio or Azure Data Studio. Since we will use Data Studio as well for Spark notebooks and HDFS, we will connect using Azure Data Studio.
 
-You can verify yourself that this is a standard SQL Server instance. The following screenshot shows a query over an external table storing data in HDFS on the same cluster.
+Create a new connection and select connection type `Microsoft SQL Server`. Use the username `sa` and the password you set in the setup script.
+
+The following screenshot shows a query over an external table storing data in HDFS on the same cluster.
 
 ![External table in SQL Server 2019]({{ site.baseurl }}/images/sql2019/sql.png "External table in SQL Server 2019"){: .image-col-1}
 
@@ -271,7 +281,11 @@ To work with Spark in SQL Server 2019 BDC, we can leverage the notebook capabili
 
 In the current version, the credentials from Spark are not yet passed to the SQL engine automatically. Hence we have to supply a username and password along with the local database host to build the JDBC connection string. Here is a simple PySpark script to connect to the SQL Server database from within Spark.
 
-To connect to the SQL database master instance from Spark, we need to provide the local IP address of the master instance. You can find the local IP address of the SQL Server master instance service in the Kubernetes Dashboard, under the Big Data cluster namespace under services.
+To connect to the SQL Server *Master Instance* from Spark from within the cluster, we need to provide the **local** IP address of the master instance. You can find the local IP address of the SQL Server master instance service in the Kubernetes Dashboard, under the Big Data cluster namespace under services under the name `endpoint-master-pool` as property Cluster IP. Alternatively, you can as well print the internal IP address using the following command:
+
+```sh
+$ kubectl get service endpoint-master-pool -o=custom-columns="IP:.spec.clusterIP,PORT:.spec.ports[0].port" -n $CLUSTER_NAME
+```
 
 ```python
 host = "<local_ip_address>:31334"
