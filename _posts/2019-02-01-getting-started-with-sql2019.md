@@ -112,8 +112,8 @@ AZURE_REGION="westeurope"
 VM_SIZE="Standard_L4s"
 # Provide number of worker nodes for AKS cluster
 AKS_NODE_COUNT="3"
-# Provide Kubernetes version
-KUBERNETES_VERSION="1.12.6"
+# Provide supported Kubernetes version
+KUBERNETES_VERSION="1.12.7"
 
 # This is both Kubernetes cluster name and SQL Big Data cluster name
 # Provide name of AKS cluster and SQL big data cluster
@@ -161,6 +161,12 @@ $ az aks create --subscription $SUBSCRIPTION_ID --location $AZURE_REGION \
     --name $CLUSTER_NAME --resource-group $GROUP_NAME \
     --generate-ssh-keys --node-vm-size $VM_SIZE \
     --node-count $AKS_NODE_COUNT --kubernetes-version $KUBERNETES_VERSION
+```
+
+If your code fails at this point, the selected Kubernetes version might not be supported in your region. You can check which versions are supported using the following command.
+
+```sh
+$ az aks get-versions --location $AZURE_REGION --output table
 ```
 
 Please note, if you have problems with the aks command creating the Service Principal in your Azure Active Directory (like for Microsoft employees), you can as well create the principal manually beforehand:
